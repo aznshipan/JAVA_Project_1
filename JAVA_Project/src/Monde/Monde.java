@@ -39,7 +39,7 @@ public class Monde {
 					carte.add(monstre);
 				}
 			}*/
-			if (p <= 0.9) {
+			if (p <= 0.6) {
 				int x1= (int) (Math.random()*dx);
 				int y1 =(int) (Math.random()*dy);
 				Arbre arbres = new Arbre(x1, y1);

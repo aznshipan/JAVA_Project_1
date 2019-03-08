@@ -81,11 +81,33 @@ public class M1 extends M{
 					return;
 				}
 			}
-			else {
-				this.sens = (int)(Math.random()*4);
+		}
+		this.sens = (int)(Math.random()*4);
+		for(int m=  0; m < Monde.getCarte().size();m++) {
+			if(this.sens == 0) {
+				if(Monde.getCarte().get(m) instanceof Arbre && ((Arbre) Monde.getCarte().get(m)).getX() == this.x-1 && ((Arbre) Monde.getCarte().get(m)).getY() == this.y) {
+					setSens();
+				}
+			}
+			if(this.sens == 1) {
+				if(Monde.getCarte().get(m) instanceof Arbre && ((Arbre) Monde.getCarte().get(m)).getX() == this.x+1 && ((Arbre) Monde.getCarte().get(m)).getY() == this.y) {
+					setSens();
+				}
+			}
+			if(this.sens == 2) {
+				if(Monde.getCarte().get(m) instanceof Arbre && ((Arbre) Monde.getCarte().get(m)).getX() == this.x && ((Arbre) Monde.getCarte().get(m)).getY() == this.y+1) {
+					setSens();
+				}
+			}
+			if(this.sens == 3) {
+				if(Monde.getCarte().get(m) instanceof Arbre && ((Arbre) Monde.getCarte().get(m)).getX() == this.x && ((Arbre) Monde.getCarte().get(m)).getY() == this.y-1) {
+					setSens();
+				}
 			}
 		}
 	}
+		
+	
 	public int getSens() {
 		return this.sens;
 	}
