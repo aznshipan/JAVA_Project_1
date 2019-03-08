@@ -19,20 +19,20 @@ public class M1 extends M{
 	public void move(int dx, int dy) {
 	
 	if(this.sens == 0) {
-		this.x=(this.x-1+dx)%dx;
+		this.x=(this.x-1+dx)%dx; //pour se déplacer à gauche
 	}
 	if(this.sens == 1) {
-		this.x=(this.x+1+dx)%dx;
+		this.x=(this.x+1+dx)%dx; //pour se déplacer à droite
 	}
 	if(this.sens == 2) {
-		this.y=(this.y+1+dx)%dx;
+		this.y=(this.y+1+dx)%dx; // pour se déplacer vers le bas 
 	}
 	if(this.sens == 3) {
-		this.y=(this.y-1+dx)%dx;
+		this.y=(this.y-1+dx)%dx; // pour se déplacer vers le haut
 	}
 	for(int m=  0; m < Monde.getCarte().size();m++) {
 		if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) {
-			manger_pomme((Pomme) Monde.getCarte().get(m), Monde.getCarte());
+			manger_pomme((Pomme) Monde.getCarte().get(m), Monde.getCarte());  //fonce sur la pomme !
 		}
 		
 	}
@@ -40,8 +40,8 @@ public class M1 extends M{
 		}
 	
 	public void evoluer() {
-		if(nb_pomme_manger >= 30 && nb_evolution == 0) {
-			nb_evolution ++;
+		if(nb_pomme_manger >= 30 && evolution == false) {
+			evolution = true; //pour évoluer
 		}
 	}
 	public void manger_pomme(Pomme apple , ArrayList<Object> monde) {
@@ -63,17 +63,22 @@ public class M1 extends M{
 					(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x+1 && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) ||
 					(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y+1) ||
 					(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y-1)) {
+				
 				if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x-1 && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) {
 					this.sens = 0;
+					return;
 				}
 				if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x+1 && ((Pomme) Monde.getCarte().get(m)).getY() == this.y) {
 					this.sens = 1;
+					return;
 				}
 				if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y+1) {
 					this.sens = 2;
+					return;
 				}
 				if(Monde.getCarte().get(m) instanceof Pomme && ((Pomme) Monde.getCarte().get(m)).getX() == this.x && ((Pomme) Monde.getCarte().get(m)).getY() == this.y-1) {
 					this.sens = 3;
+					return;
 				}
 			}
 			else {

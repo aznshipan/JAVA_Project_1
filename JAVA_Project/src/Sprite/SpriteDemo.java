@@ -31,11 +31,12 @@ public class SpriteDemo extends JPanel {
 	private Image treeSprite;
 	private Image tSprite;
 	private Image PokemonFeu;
+	private Image PokemonFeuEvolue;
 	private Image[][] PokemonFeuMove;
 	private Image[][] PokemonFeuEvolueMove;
-	private Image PokemonFeuEvolue;
 	private Image PokemonEau;
 	private Image PokemonEauEvolue;
+	private Image[][] PokemonEauMove;
 	private Image Apple;
 	private Image ApplePourri;
 	private Image Chasseur;
@@ -46,6 +47,7 @@ public class SpriteDemo extends JPanel {
 	private static int marcher = 0;
 	private static int cpt_pas = 0;
 	private static M1 Hericendre;
+	private static M2 Carapuce;
 	private static int step;
 
 	public SpriteDemo()
@@ -142,6 +144,47 @@ public class SpriteDemo extends JPanel {
 			
 			
 			
+			PokemonEauMove = new Image[4][8];  //carapuce
+			PokemonEauMove[0][0] = ImageIO.read(new File("Carapuce_walkdown1.png"));
+			PokemonEauMove[0][1] = ImageIO.read(new File("Carapuce_walkdown2.png"));
+			PokemonEauMove[0][2] = ImageIO.read(new File("Carapuce_walkdown3.png"));
+			PokemonEauMove[0][3] = ImageIO.read(new File("Carapuce_walkdown4.png"));
+			PokemonEauMove[0][4] = ImageIO.read(new File("Carapuce_walkdown1.png"));  //deplacement vers le bas
+			PokemonEauMove[0][5] = ImageIO.read(new File("Carapuce_walkdown2.png"));
+			PokemonEauMove[0][6] = ImageIO.read(new File("Carapuce_walkdown3.png"));
+			PokemonEauMove[0][7] = ImageIO.read(new File("Carapuce_walkdown4.png"));
+			
+			PokemonEauMove[1][0] = ImageIO.read(new File("Carapuce_walkup1.png"));
+			PokemonEauMove[1][1] = ImageIO.read(new File("Carapuce_walkup2.png"));
+			PokemonEauMove[1][2] = ImageIO.read(new File("Carapuce_walkup3.png"));
+			PokemonEauMove[1][3] = ImageIO.read(new File("Carapuce_walkup4.png"));
+			PokemonEauMove[1][4] = ImageIO.read(new File("Carapuce_walkup1.png"));  //deplacement vers le haut
+			PokemonEauMove[1][5] = ImageIO.read(new File("Carapuce_walkup2.png"));
+			PokemonEauMove[1][6] = ImageIO.read(new File("Carapuce_walkup3.png"));
+			PokemonEauMove[1][7] = ImageIO.read(new File("Carapuce_walkup4.png"));
+			
+			PokemonEauMove[2][0] = ImageIO.read(new File("Carapuce_walkleft1.png"));
+			PokemonEauMove[2][1] = ImageIO.read(new File("Carapuce_walkleft2.png"));
+			PokemonEauMove[2][2] = ImageIO.read(new File("Carapuce_walkleft3.png"));
+			PokemonEauMove[2][3] = ImageIO.read(new File("Carapuce_walkleft4.png"));
+			PokemonEauMove[2][4] = ImageIO.read(new File("Carapuce_walkleft1.png"));  //deplacement vers la gauche
+			PokemonEauMove[2][5] = ImageIO.read(new File("Carapuce_walkleft2.png"));
+			PokemonEauMove[2][6] = ImageIO.read(new File("Carapuce_walkleft3.png"));
+			PokemonEauMove[2][7] = ImageIO.read(new File("Carapuce_walkleft4.png"));
+			
+			PokemonEauMove[3][0] = ImageIO.read(new File("Carapuce_walkright1.png"));
+			PokemonEauMove[3][1] = ImageIO.read(new File("Carapuce_walkright2.png"));
+			PokemonEauMove[3][2] = ImageIO.read(new File("Carapuce_walkright3.png"));
+			PokemonEauMove[3][3] = ImageIO.read(new File("Carapuce_walkright4.png"));
+			PokemonEauMove[3][4] = ImageIO.read(new File("Carapuce_walkright1.png"));  //deplacement vers la droite
+			PokemonEauMove[3][5] = ImageIO.read(new File("Carapuce_walkright2.png"));
+			PokemonEauMove[3][6] = ImageIO.read(new File("Carapuce_walkright3.png"));
+			PokemonEauMove[3][7] = ImageIO.read(new File("Carapuce_walkright4.png"));
+			
+			
+			
+			
+			
 		}
 		catch(Exception e)
 		{
@@ -188,7 +231,7 @@ public class SpriteDemo extends JPanel {
 								Hericendre = (M1)(Monde.testC(i, j));
 								Hericendre.setSens();
 								}
-							if(Hericendre.getNb_evolution() == 0) {
+							if(Hericendre.getEvolution() == false) {
 							
 								Hericendre = (M1)(Monde.testC(i, j));
 								if ( Hericendre.getSens() == 0 ) { //va a gauche
@@ -204,7 +247,7 @@ public class SpriteDemo extends JPanel {
 									g2.drawImage(PokemonFeuMove[1][pas],spriteLength*i ,spriteLength*j - this.marcher,spriteLength,spriteLength, frame);
 								}
 							}
-							if(Hericendre.getNb_evolution() == 1) {
+							if(Hericendre.getEvolution()) {
 								
 								Hericendre = (M1)(Monde.testC(i, j));
 								if ( Hericendre.getSens() == 0 ) { //va a gauche
@@ -275,7 +318,7 @@ public class SpriteDemo extends JPanel {
 			marcher += 5 ;
 			//Braconnier.chasser();
 			try{
-				Thread.sleep(10); // en ms
+				Thread.sleep(50); // en ms
 			}catch(Exception e){
 				e.printStackTrace();
 			}

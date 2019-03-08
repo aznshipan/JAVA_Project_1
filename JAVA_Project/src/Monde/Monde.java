@@ -13,7 +13,6 @@ public class Monde {
 	private int dx;
 	private int dy;
 	private static ArrayList<Object> carte = new ArrayList<>();
-	private static int direction;
 	private int cpt = 0;
 	
 	
@@ -40,7 +39,7 @@ public class Monde {
 					carte.add(monstre);
 				}
 			}*/
-			if (p <= 0.4) {
+			if (p <= 0.9) {
 				int x1= (int) (Math.random()*dx);
 				int y1 =(int) (Math.random()*dy);
 				Arbre arbres = new Arbre(x1, y1);
@@ -113,9 +112,6 @@ public class Monde {
 				((Pomme) carte.get(i)).pourrir();
 			}
 		}
-	}
-	public static int getDirection() {
-		return direction;
 	}
 	
 	public void Afficher() {
