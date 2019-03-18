@@ -30,7 +30,7 @@ public class Braconnier {
 		do {
 			x1= (int) (Math.random()*3) -1;
 			x2= (int) (Math.random()*3) -1;
-		}while(Monde.testC(((x+x1+dx)%dx),((y+x2+dy)%dy)) instanceof Arbre);
+		}while(Monde.testC(((x+x1+dx)%dx),((y+x2+dy)%dy)).size() !=0);
 		x=(x+x1+dx)%dx;
 		y=(y+x2+dy)%dy;
 	}
