@@ -24,24 +24,28 @@ public class Monde {
 	public Monde(int x, int y, int nb_A) {//Initialisation de la liste des agents à mettre dans le monde
 		dx=x;
 		dy=y;
+		int x1= (int) (Math.random()*dx);
+		int y1 =(int) (Math.random()*dy);
+		Braconnier braconnier = new Braconnier(x1, y1);
+		carte.add(braconnier);
 		for (int i=0;i<nb_A;i++) {
 			double p = Math.random();
 			if (p <= 0.4) {
-				int x1= (int) (Math.random()*dx);
-				int y1 =(int) (Math.random()*dy);
-				Arbre arbres = new Arbre(x1, y1);
+				int x2= (int) (Math.random()*dx);
+				int y2 =(int) (Math.random()*dy);
+				Arbre arbres = new Arbre(x2, y2);
 				carte.add(arbres);
 			}else {
 				double p1 =  Math.random();
 				if (p1 <= 0.5) {
-					int x1= (int) (Math.random()*dx);
-					int y1 =(int) (Math.random()*dy);
-					M1 monstre = new M1(x1, y1);
+					int x2= (int) (Math.random()*dx);
+					int y2 =(int) (Math.random()*dy);
+					M1 monstre = new M1(x2, y2);
 					carte.add(monstre);
 				}else {
-					int x1= (int) (Math.random()*dx);
-					int y1 =(int) (Math.random()*dy);
-					M2 monstre = new M2(x1, y1);
+					int x2= (int) (Math.random()*dx);
+					int y2 =(int) (Math.random()*dy);
+					M2 monstre = new M2(x2, y2);
 					carte.add(monstre);
 				}
 			}
@@ -49,6 +53,7 @@ public class Monde {
 		/*
 		carte.add(new M1(10,10));
 		//carte.add(new M1(6,6));
+		carte.add(new Arbre(10,10));
 		carte.add(new Arbre(9,10));
 		carte.add(new Arbre(11,10));
 		carte.add(new Arbre(10,9));
@@ -148,15 +153,76 @@ public class Monde {
 		}
 	}
 	
-	public void incendie() {
+	public void depart_feu() {
+		int cpt;
 		for (int i=0;i<carte.size();i++) {
 			if (carte.get(i) instanceof Arbre) {
-				if (testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY(), Mobs.M1.class).size() !=0){
-					
+				cpt=0;
+				
+				if (testC(((Arbre) carte.get(i)).getX()-1, ((Arbre) carte.get(i)).getY(), Mobs.M1.class).size() !=0) {
+					cpt+=1;
+				}
+				if (testC(((Arbre) carte.get(i)).getX()+1, ((Arbre) carte.get(i)).getY(), Mobs.M1.class).size() !=0) {
+					cpt+=1;
+				}
+				if (testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY()-1, Mobs.M1.class).size() !=0) {
+					cpt+=1;
+				}
+				if (testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY()+1, Mobs.M1.class).size() !=0) {
+					cpt+=1;
+				}
+				if (cpt ==1)// && Math.random()<0.05)
+					((Arbre) carte.get(i)).setEnfeu(true);
+				if (cpt ==2)// && Math.random()<0.01)sEnfeu())
+					((Arbre) carte.get(i)).setEnfeu(true);
+				if (cpt ==3)// && Math.random()<0.15)
+					((Arbre) carte.get(i)).setEnfeu(true);
+				if (cpt ==4)// && Math.random()<0.20)
+					((Arbre) carte.get(i)).setEnfeu(true);
+				}			
+		}
+	}
+	
+	public void propagation_F() {
+		try {
+		//System.out.println(""+carte_depart.toString());
+		//System.out.println(""+carte.toString());
+		
+		int a;
+		for (int i=0;i<carte.size();i++) {
+			if (carte.get(i) instanceof Arbre && ((Arbre) carte.get(i)).isEnfeu()) {
+				if (testC(((Arbre) carte.get(i)).getX()-1, ((Arbre) carte.get(i)).getY(), Mobs.Arbre.class).size() !=0) {
+					a= carte.indexOf(testC(((Arbre) carte.get(i)).getX()-1, ((Arbre) carte.get(i)).getY(), Mobs.Arbre.class).get(0));
+					((Arbre) carte.get(a)).setBrulé(true);
+				}
+				if (testC(((Arbre) carte.get(i)).getX()+1, ((Arbre) carte.get(i)).getY(), Mobs.Arbre.class).size() !=0) {
+					a= carte.indexOf(testC(((Arbre) carte.get(i)).getX()+1, ((Arbre) carte.get(i)).getY(), Mobs.Arbre.class).get(0));
+					((Arbre) carte.get(a)).setBrulé(true);
+				}
+				if (testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY()-1, Mobs.Arbre.class).size() !=0) {
+					a= carte.indexOf(testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY()-1, Mobs.Arbre.class).get(0));
+					((Arbre) carte.get(a)).setBrulé(true);
+				}
+				if (testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY()+1, Mobs.Arbre.class).size() !=0) {
+					a= carte.indexOf(testC(((Arbre) carte.get(i)).getX(), ((Arbre) carte.get(i)).getY()+1, Mobs.Arbre.class).get(0));
+					((Arbre) carte.get(a)).setBrulé(true);
 				}
 			}
 		}
+		}catch(Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 	}
+	
+	public void enfeu() {
+		for (int i=0;i<carte.size();i++) {
+			if (carte.get(i) instanceof Arbre && ((Arbre) carte.get(i)).isBrulé()) {
+				((Arbre) carte.get(i)).setEnfeu(true);
+			}
+		}
+	}
+	
 	public static int getDirection() {
 		return direction;
 	}

@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Paint;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.ImageObserver;
 import java.io.File;
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ import Mobs.Pomme;
 import Monde.Monde;
 import Monde.Terrain;
 
-public class SpriteDemo extends JPanel {
+public class SpriteDemo extends JPanel implements KeyListener{
 
 
 	private JFrame frame;
@@ -45,15 +47,18 @@ public class SpriteDemo extends JPanel {
 	private Image Apple;
 	private Image ApplePourri;
 	private Image Chasseur;
+	private Image [][] ChasseurMove;
 	public static int dx;
 	public static int dy;
+	private int x;
+	private int y;
 	private int spriteLength = 40;
 	private static int pas = 0;
 	private static int marcher = 0;
 	private static int cpt_pas = 0;
-	private static M1 Hericendre;
-	private static M2 Carapuce;
 	private static int step;
+	public int vitesse;
+
 
 	public SpriteDemo()
 	{
@@ -62,7 +67,7 @@ public class SpriteDemo extends JPanel {
 			waterSprite = ImageIO.read(new File("water.png"));
 			treeSprite = ImageIO.read(new File("arbref.png"));
 			grassSprite = ImageIO.read(new File("herbeP.png"));
-			tSprite = ImageIO.read(new File("tree.png"));
+			tSprite = ImageIO.read(new File("test1.png"));
 			terreSprite = ImageIO.read(new File("terre.png"));
 			PokemonFeu = ImageIO.read(new File("hericendre.png"));
 			PokemonFeuEvolue = ImageIO.read(new File("FeurissonTrans.png")); 
@@ -224,6 +229,43 @@ public class SpriteDemo extends JPanel {
 			PokemonEauEvolueMove[3][6] = ImageIO.read(new File("Carabaffe_walkright3.png"));
 			PokemonEauEvolueMove[3][7] = ImageIO.read(new File("Carabaffe_walkright4.png"));
 			
+			ChasseurMove = new Image[4][8]; //chasseur
+			ChasseurMove[0][0] = ImageIO.read(new File("character_walkdown0.png"));
+			ChasseurMove[0][1] = ImageIO.read(new File("character_walkdown1.png"));
+			ChasseurMove[0][2] = ImageIO.read(new File("character_walkdown2.png"));
+			ChasseurMove[0][3] = ImageIO.read(new File("character_walkdown0.png"));  //deplacement vers le bas
+			ChasseurMove[0][4] = ImageIO.read(new File("character_walkdown1.png"));
+			ChasseurMove[0][5] = ImageIO.read(new File("character_walkdown2.png"));
+			ChasseurMove[0][6] = ImageIO.read(new File("character_walkdown0.png"));
+			ChasseurMove[0][7] = ImageIO.read(new File("character_walkdown1.png"));
+			
+			ChasseurMove[1][0] = ImageIO.read(new File("character_walkup0.png"));
+			ChasseurMove[1][1] = ImageIO.read(new File("character_walkup1.png"));
+			ChasseurMove[1][2] = ImageIO.read(new File("character_walkup2.png"));  //deplacement vers le haut
+			ChasseurMove[1][3] = ImageIO.read(new File("character_walkup0.png"));
+			ChasseurMove[1][4] = ImageIO.read(new File("character_walkup1.png"));
+			ChasseurMove[1][5] = ImageIO.read(new File("character_walkup2.png"));
+			ChasseurMove[1][6] = ImageIO.read(new File("character_walkup0.png"));
+			ChasseurMove[1][7] = ImageIO.read(new File("character_walkup1.png"));
+			
+			ChasseurMove[2][0] = ImageIO.read(new File("character_walkleft0.png"));
+			ChasseurMove[2][1] = ImageIO.read(new File("character_walkleft1.png"));
+			ChasseurMove[2][2] = ImageIO.read(new File("character_walkleft2.png"));  //deplacement vers la gauche
+			ChasseurMove[2][3] = ImageIO.read(new File("character_walkleft0.png"));
+			ChasseurMove[2][4] = ImageIO.read(new File("character_walkleft1.png"));
+			ChasseurMove[2][5] = ImageIO.read(new File("character_walkleft2.png"));
+			ChasseurMove[2][6] = ImageIO.read(new File("character_walkleft0.png"));
+			ChasseurMove[2][7] = ImageIO.read(new File("character_walkleft1.png"));
+			
+			ChasseurMove[3][0] = ImageIO.read(new File("character_walkright0.png"));
+			ChasseurMove[3][1] = ImageIO.read(new File("character_walkright1.png"));
+			ChasseurMove[3][2] = ImageIO.read(new File("character_walkright2.png"));  //deplacement vers la droite
+			ChasseurMove[3][3] = ImageIO.read(new File("character_walkright0.png"));
+			ChasseurMove[3][4] = ImageIO.read(new File("character_walkright1.png"));
+			ChasseurMove[3][5] = ImageIO.read(new File("character_walkright2.png"));
+			ChasseurMove[3][6] = ImageIO.read(new File("character_walkright0.png"));
+			ChasseurMove[3][7] = ImageIO.read(new File("character_walkright1.png")); 
+			
 			
 			
 		}
@@ -235,12 +277,16 @@ public class SpriteDemo extends JPanel {
 
 		frame = new JFrame("World of Sprite");
 		frame.add(this);
-		frame.setSize(645,665);
+		x=dx*spriteLength;
+		y=dy*spriteLength;
+		frame.setSize(x,y+37);
 		frame.setVisible(true);
+		vitesse=30;
 	}
 
 	public void paint(Graphics g)
 	{
+		super.paintComponent(g); // effacer le contenu fenetre
 		Graphics2D g2 = (Graphics2D)g;
 		for ( int i1 = 0 ; i1 < dx ; i1++ ) {
 			for ( int j1 = 0 ; j1 < dy ; j1++ ) {
@@ -311,30 +357,6 @@ public class SpriteDemo extends JPanel {
 								}
 							}
 						}
-							
-		
-							
-		
-					
-							
-					/*	if (Monde.testC(i, j) instanceof M2) {
-							if (((M2) Monde.testC(i, j)).getNb_evolution() == 0)
-								g2.drawImage(PokemonEau,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
-							if (((M2) Monde.testC(i, j)).getNb_evolution() == 1)
-								g2.drawImage(PokemonEauEvolue,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
-						}
-						if (Monde.testC(i, j) instanceof Arbre) {
-							g2.drawImage(tSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
-						}
-						if (Monde.testC(i, j)instanceof Pomme) {
-							g2.drawImage(grassSprite,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);
-							if ((((Pomme) Monde.testC(i, j)).isEstPourrie() == false))
-								g2.drawImage(Apple,spriteLength*i,spriteLength*j,spriteLength-10,spriteLength-10, frame);
-							if ((((Pomme) Monde.testC(i, j)).isEstPourrie() == true))
-								g2.drawImage(ApplePourri,spriteLength*i,spriteLength*j,spriteLength-10,spriteLength-10, frame);
-						}
-						if (Monde.testC(i, j) instanceof Braconnier)
-							g2.drawImage(Chasseur,spriteLength*i,spriteLength*j,spriteLength,spriteLength, frame);*/
 					}
 					ArrayList<Object> array_m2=Monde.testC(i, j,Mobs.M2.class);
 					for (int m=0;m<array_m2.size();m++) {
@@ -376,17 +398,84 @@ public class SpriteDemo extends JPanel {
 							}
 						}
 					}
+					ArrayList<Object> array_chasseur=Monde.testC(i, j,Mobs.Braconnier.class);
+					for (int m=0;m<array_chasseur.size();m++) {
+						if (array_chasseur.get(m) instanceof Braconnier) {
+							Braconnier chasseur = (Braconnier)(array_chasseur.get(m));
+							if(cpt_pas % 8 == 0) {
+								chasseur.setSens();
+							}
+							if ( chasseur.getSens() == 0 ) { //va a gauche
+								g2.drawImage(ChasseurMove[2][pas],spriteLength*i - SpriteDemo.marcher,spriteLength*j,spriteLength,spriteLength, frame);
+							}
+							if ( chasseur.getSens() == 1 ) { //va a droite
+								g2.drawImage(ChasseurMove[3][pas],spriteLength*i + SpriteDemo.marcher,spriteLength*j,spriteLength,spriteLength, frame);
+							}
+							if ( chasseur.getSens() == 2 ) { //va en bas
+								g2.drawImage(ChasseurMove[0][pas],spriteLength*i ,spriteLength*j + SpriteDemo.marcher,spriteLength-5,spriteLength-5, frame);
+							}
+							if ( chasseur.getSens() == 3 ) { //va en haut
+								g2.drawImage(ChasseurMove[1][pas],spriteLength*i ,spriteLength*j - SpriteDemo.marcher,spriteLength-5,spriteLength-5, frame);
+							}
+							
+						}
+					}
 				}catch(Exception E) {
 					E.printStackTrace();
 				}
 				
 			}
+	}
+	@Override
+	public void keyPressed(KeyEvent evmt) {
+		
+		int source =evmt.getKeyCode();
+		if (source == KeyEvent.VK_RIGHT) {
+			if (vitesse == 20)
+				vitesse=10;
+			if (vitesse == 30)
+				vitesse=20;
+			
+		}
+		if (source == KeyEvent.VK_LEFT) {
+			if (vitesse == 20)
+				vitesse=30;
+			if (vitesse == 10)
+				vitesse=20;			
+		}
+		if (source == 107) { //107 : id de la touche "+" sur le pavé numerique
+			spriteLength+=10;
+			x=dx*spriteLength;
+			y=dy*spriteLength;
+			frame.setSize(x,y+37);
+			frame.setVisible(true);
+		}
+		if (source == 109) { //109 : id de la touche "-" sur le pavé numerique
+			spriteLength-=10;
+			x=dx*spriteLength;
+			y=dy*spriteLength;
+			frame.setSize(x,y+37);
+			frame.setVisible(true);
+		}		
+	}
 	
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	public static void main(String[] args) {
-		Monde monde = new Monde(dx=15,dy=15,15);
+		Monde monde = new Monde(dx=15,dy=15,35);
 		SpriteDemo a =new SpriteDemo();
 		Terrain terrain= new Terrain(dx,dy);
+		a.setFocusable(true);
+        a.addKeyListener(a);
 		//System.out.println(""+((M1) Monde.getCarte().get(0)).getSens());
 		//monde.detail();
 		//System.exit(123);
@@ -412,11 +501,14 @@ public class SpriteDemo extends JPanel {
 				terrain.Stockage_passage();
 				Monde.grandir();
 				M.reproduction();
+				monde.depart_feu();
+				monde.enfeu();
+				monde.propagation_F();
 			}
 			marcher += 5 ;
 			//Braconnier.chasser();
 			try{
-				Thread.sleep(20); // en ms
+				Thread.sleep(a.vitesse); // en ms
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -424,4 +516,5 @@ public class SpriteDemo extends JPanel {
 			step++;
 		}
 	}
+
 }
