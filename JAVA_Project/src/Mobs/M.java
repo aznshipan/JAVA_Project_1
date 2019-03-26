@@ -22,6 +22,7 @@ public abstract class M {
 	public M(int x, int y) {
 		this.x=x;
 		this.y=y;
+		this.sens=(int)(Math.random()*4);
 		id++;
 		step =0;
 		nb_pomme_manger = 0;
@@ -125,6 +126,7 @@ public abstract class M {
 			}
 		}
 	}
+	public abstract void setSens();
 	
 	
 }

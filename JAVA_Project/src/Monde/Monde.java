@@ -60,10 +60,10 @@ public class Monde {
 		carte_Ab.add(new Arbre(9,10));
 		carte_Ab.add(new Arbre(10,9));
 		carte_Ab.add(new Arbre(10,11));*/
-		for (int i=0;i<carte_Ag.size();i++) {
+		/*for (int i=0;i<carte_Ag.size();i++) {
 			if (carte_Ag.get(i) instanceof M1)	
 				((M1) carte_Ag.get(i)).setSens();
-		}
+		}*/
 		//carte_Ag.add(new M1(6,6));
 		//carte_Ag.add(new M2(5,5));
 	}
@@ -114,6 +114,7 @@ public class Monde {
 		for (int i=0;i<carte_Ag.size();i++) {
 			if (carte_Ag.get(i) instanceof M) {	
 				((M) carte_Ag.get(i)).move(dx, dy);
+				((M) carte_Ag.get(i)).setSens();
 			}
 			if (carte_Ag.get(i) instanceof Braconnier)
 				((Braconnier) carte_Ag.get(i)).move(dx, dy);

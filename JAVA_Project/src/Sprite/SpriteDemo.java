@@ -300,9 +300,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 					for (int m=0;m<array_m.size();m++) {
 						if (array_m.get(m) instanceof M1 && ((M1)array_m.get(m)).getX()==i && ((M1)array_m.get(m)).getY()==j) {
 							M1 Hericendre = (M1)(array_m.get(m));
-							if(cpt_pas % 8 == 0) {
-								Hericendre.setSens();
-							}
+							
 							if(Hericendre.getEvolution() == false) {
 								if ( Hericendre.getSens() == 0 ) { //va a gauche
 									g2.drawImage(PokemonFeuMove[2][pas],spriteLength*(i-a1) - SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
@@ -338,9 +336,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 
 						if (array_m.get(m) instanceof M2 && ((M2)array_m.get(m)).getX()==i && ((M2)array_m.get(m)).getY()==j) {
 							M2 Carapuce = (M2)(array_m.get(m));
-							if(cpt_pas % 8 == 0) {
-								Carapuce.setSens();
-							}
+							
 							if(Carapuce.getEvolution() == false) {
 								if ( Carapuce.getSens() == 0 ) { //va a gauche
 									g2.drawImage(PokemonEauMove[2][pas],spriteLength*(i-a1) - SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
@@ -519,7 +515,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
     } 
 	
 	public static void main(String[] args) {
-		Monde monde = new Monde(dx=100,dy=100,1,0.2);
+		Monde monde = new Monde(dx=100,dy=100,50,0.5);
 		SpriteDemo a =new SpriteDemo();
 		Terrain terrain= new Terrain(dx,dy);
 		//System.exit(0);

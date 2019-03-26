@@ -30,16 +30,22 @@ public class Terrain {
 		}
 		this.dx=dx;
 		this.dy=dy;
-		terrain = new int[dx][dy][2];
+		terrain = new int[dx][dy][3];
 		for (int i=0;i<dx;i++) {
 			for (int j=0;j<dy;j++) {
 				Color c = new Color(image.getRGB(i, j));
 				int couleur = c.getRed();
 				terrain[i][j][0]=0;
 				terrain[i][j][1]=couleur / 20;
-				System.out.print(" "+ terrain[i][j][1]);
+				terrain[i][j][2]=0;
+				for(int m=  0; m < Monde.getcarte_Ab().size();m++) {
+					if(Monde.getcarte_Ab().get(m).getX()==i && Monde.getcarte_Ab().get(m).getY()==j) {
+						terrain[i][j][2]=1;
+					}
+				}
+				//System.out.print(" "+ terrain[i][j][2]);
 			}
-			System.out.println("");
+		//	System.out.println("");
 		}
 	}
 	public int cpt;

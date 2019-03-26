@@ -3,6 +3,7 @@ package Mobs;
 import java.util.ArrayList;
 
 import Monde.Monde;
+import Monde.Terrain;
 
 public class M1 extends M{
 	public M1(int x, int y) {
@@ -29,6 +30,7 @@ public class M1 extends M{
 		if (this.sens == 3) {
 			this.y=(this.y-1+dy)%dy;
 		}
+		System.out.println("Terrain["+this.x+"]["+this.y+"][2]="+Terrain.getTerrain()[this.x][this.y][2]);
 		for (int m=  0; m < Monde.getcarte_P().size();m++) {
 			if (Monde.getcarte_P().get(m) instanceof Pomme && ((Pomme) Monde.getcarte_P().get(m)).getX() == this.x && ((Pomme) Monde.getcarte_P().get(m)).getY() == this.y) {
 				manger_pomme((Pomme) Monde.getcarte_P().get(m));
@@ -56,6 +58,7 @@ public class M1 extends M{
 		}
 	}
 	public void setSens() {
+		System.out.println("setSens()");
 		int cpt=0;
 		int tab_A[] = new int[4];
 		for (int i=0;i<Monde.getcarte_Ab().size();i++) {
@@ -105,29 +108,34 @@ public class M1 extends M{
 			
 		}
 		while(true) {
-			int front = 0;
 			this.sens = (int)(Math.random()*4);
-			for(int m=  0; m < Monde.getcarte_Ab().size();m++) {
-				if(this.sens == 0 && ((Arbre) Monde.getcarte_Ab().get(m)).getX() == this.x-1 && ((Arbre) Monde.getcarte_Ab().get(m)).getY() == this.y) {
-					front++;
-					break;
-				}
-				if(this.sens == 1 && ((Arbre) Monde.getcarte_Ab().get(m)).getX() == this.x+1 && ((Arbre) Monde.getcarte_Ab().get(m)).getY() == this.y) {
-					front++;
-					break;
-				}
-				if(this.sens == 2 && ((Arbre) Monde.getcarte_Ab().get(m)).getX() == this.x && ((Arbre) Monde.getcarte_Ab().get(m)).getY() == this.y+1) {
-					front++;
-					break;
-				}
-				if(this.sens == 3 && ((Arbre) Monde.getcarte_Ab().get(m)).getX() == this.x && ((Arbre) Monde.getcarte_Ab().get(m)).getY() == this.y-1) {
-						front++;
-						break;
-				}
-			}
-			if(front == 0) {
+			if(this.sens == 0 && Terrain.getTerrain()[(this.x-1+Monde.getDx())%Monde.getDx()][this.y][2] == 0) {
+					//System.out.println("TestGauche "+ Terrain.getTerrain()[(this.x-1+Monde.getDx())%Monde.getDx()][this.y][2] + "Sens "+this.sens);
+				System.out.println("(this.x-1 = "+ (this.x-1+Monde.getDx())%Monde.getDx()+" this.y = "+ this.y);	
 				break;
 			}
+				//this.sens=(this.sens+1+4)%4;
+			if(this.sens == 1 && Terrain.getTerrain()[(this.x+1+Monde.getDx())%Monde.getDx()][this.y][2] == 0) {
+				//	System.out.println("TestDroite "+ Terrain.getTerrain()[(this.x+1+Monde.getDx())%Monde.getDx()][this.y][2] + "Sens "+this.sens);
+				System.out.println("(this.x+1 = "+ (this.x+1+Monde.getDx())%Monde.getDx()+" this.y = "+ this.y);	
+				break;
+				
+				//this.sens=(this.sens+1+4)%4;
+			}
+			if(this.sens == 2 && Terrain.getTerrain()[this.x][(this.y+1+Monde.getDy())%Monde.getDy()][2] == 0) {
+				//	System.out.println("TestBas "+ Terrain.getTerrain()[this.x][(this.y+1+Monde.getDy())%Monde.getDy()][2] + "Sens "+this.sens);
+				System.out.println("(this.x = "+ this.x+" this.y+1 = "+ (this.y+1+Monde.getDy())%Monde.getDy());	
+				break;
+
+			//	this.sens=(this.sens+1+4)%4;
+			}
+			if(this.sens == 3 && Terrain.getTerrain()[this.x][(this.y-1+Monde.getDy())%Monde.getDy()][2] == 0) {
+					//System.out.println("TestHaut "+ Terrain.getTerrain()[this.x][(this.y-1+Monde.getDy())%Monde.getDy()][2] + "Sens "+this.sens);
+				System.out.println("(this.x = "+ this.x+" this.y+1 = "+ (this.y-1+Monde.getDy())%Monde.getDy());		
+				break;
+		
+			}
+			//this.sens=(this.sens+1+4)%4;
 		}
 	}
 	
