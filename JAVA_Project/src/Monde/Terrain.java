@@ -38,11 +38,11 @@ public class Terrain {
 				terrain[i][j][0]=0;
 				terrain[i][j][1]=couleur / 20;
 				terrain[i][j][2]=0;
-				for(int m=  0; m < Monde.getcarte_Ab().size();m++) {
+				/*for(int m=  0; m < Monde.getcarte_Ab().size();m++) {
 					if(Monde.getcarte_Ab().get(m).getX()==i && Monde.getcarte_Ab().get(m).getY()==j) {
 						terrain[i][j][2]=1;
 					}
-				}
+				}*/
 				//System.out.print(" "+ terrain[i][j][2]);
 			}
 		//	System.out.println("");

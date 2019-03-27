@@ -29,31 +29,49 @@ public class Monde {
 		return carte_P;
 	}
 
-	public Monde(int x, int y, int nb_Ag,double percolation_Ab) {//Initialisation de la liste des agents à mettre dans le monde
+	public Monde(int x, int y, double taux_agent,double percolation_Ab) {//Initialisation de la liste des agents à mettre dans le monde
 		dx=x;
 		dy=y;
-		for (int i=0;i<nb_Ag;i++) {
+		for (int i=0;i<dx;i++) {
+			for(int j=0;j<dy;j++) {
+					if(Terrain.getTerrain()[i][j][1] > 10) {
+						if(Math.random() < percolation_Ab) {
+						Terrain.getTerrain()[i][j][2]=1;
+						Arbre arbres = new Arbre(i, j);
+						carte_Ab.add(arbres);
+					}
+				}
+			}
+		}
+		for (int i=0;i<dx;i++) {
+			for(int j=0;j<dy;j++) {
+					if(Terrain.getTerrain()[i][j][1] > 10 && Terrain.getTerrain()[i][j][2]==0) {
+						if(Math.random() < taux_agent) {
+						M1 monstre = new M1(i, j);
+						carte_Ag.add(monstre);
+					}
+				}
+			}
+		}
+		/*for (int i=0;i<nb_Ag;i++) {
 			double p1 =  Math.random();
-			if (p1 <= 0.5) {
+			if (p1 <= 0.99) {
 				int x1= (int) (Math.random()*dx);
 				int y1 =(int) (Math.random()*dy);
-				M1 monstre = new M1(x1, y1);
-				carte_Ag.add(monstre);
+				if(Terrain.getTerrain()[x1][y1][1] > 10 && Terrain.getTerrain()[x1][y1][2] == 0) {
+					M1 monstre = new M1(x1, y1);
+					carte_Ag.add(monstre);
+				}
+				else {
+					i--;
+				}
 			}else {
 				int x1= (int) (Math.random()*dx);
 				int y1 =(int) (Math.random()*dy);
 				M2 monstre = new M2(x1, y1);
 				carte_Ag.add(monstre);
 			}
-		}
-		for (int i=0;i<dx;i++) {
-			for(int j=0;j<dy;j++) {
-				if(Math.random() < percolation_Ab) {
-					Arbre arbres = new Arbre(i, j);
-					carte_Ab.add(arbres);
-				}
-			}
-		}
+		}*/
 		/*
 		carte_Ag.add(new M1(10,10));
 		carte_Ab.add(new Arbre(11,10));
@@ -112,12 +130,35 @@ public class Monde {
 	
 	public void Refresh() {
 		for (int i=0;i<carte_Ag.size();i++) {
-			if (carte_Ag.get(i) instanceof M) {	
-				((M) carte_Ag.get(i)).move(dx, dy);
-				((M) carte_Ag.get(i)).setSens();
+			if(i<carte_Ag.size()) {
+				if (carte_Ag.get(i) instanceof M1) {	
+					if(Terrain.getTerrain()[((M1)carte_Ag.get(i)).getX()][((M1)carte_Ag.get(i)).getY()][1] <= 10) {
+						carte_Ag.remove(i);
+					}
+				}
 			}
-			if (carte_Ag.get(i) instanceof Braconnier)
-				((Braconnier) carte_Ag.get(i)).move(dx, dy);
+		}
+		for (int i=0;i<carte_Ag.size();i++) {
+			if(i<carte_Ag.size()) {
+				if (carte_Ag.get(i) instanceof M) {	
+					((M) carte_Ag.get(i)).move(dx, dy);
+					((M) carte_Ag.get(i)).setSens();
+				}
+				/*if (carte_Ag.get(i) instanceof Braconnier) {
+					((Braconnier) carte_Ag.get(i)).move(dx, dy);
+				}*/
+			}
+		}
+		for (int i=0;i<carte_Ab.size();i++) {
+			if(i<carte_Ab.size()) {
+				if (carte_Ab.get(i).isEnfeu()) {	
+					int x = carte_Ab.get(i).getX();
+					int y = carte_Ab.get(i).getY();
+					Terrain.getTerrain()[x][y][2] = 0;
+					carte_Ab.remove(i);
+					
+				}
+			}
 		}
 		for (int i=0;i<carte_P.size();i++) {
 			((Pomme) carte_P.get(i)).pourrir();

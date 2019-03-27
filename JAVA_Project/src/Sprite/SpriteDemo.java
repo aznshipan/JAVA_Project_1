@@ -345,10 +345,10 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 									g2.drawImage(PokemonEauMove[3][pas],spriteLength*(i-a1) + SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
 								}
 								if ( Carapuce.getSens() == 2 ) { //va en bas
-									g2.drawImage(PokemonEauMove[0][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) + SpriteDemo.marcher,spriteLength,spriteLength, frame);
+									g2.drawImage(PokemonEauMove[0][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) + SpriteDemo.marcher,spriteLength-((int)spriteLength/5),spriteLength, frame);
 								}
 								if ( Carapuce.getSens() == 3 ) { //va en haut
-									g2.drawImage(PokemonEauMove[1][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) - SpriteDemo.marcher,spriteLength,spriteLength, frame);
+									g2.drawImage(PokemonEauMove[1][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) - SpriteDemo.marcher,spriteLength-((int)spriteLength/5),spriteLength, frame);
 								}
 							}
 							if(Carapuce.getEvolution() == true) {
@@ -515,9 +515,9 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
     } 
 	
 	public static void main(String[] args) {
-		Monde monde = new Monde(dx=100,dy=100,50,0.5);
+		Terrain terrain= new Terrain(dx=100,dy=100);
+		Monde monde = new Monde(dx,dy,0.1,0.8);
 		SpriteDemo a =new SpriteDemo();
-		Terrain terrain= new Terrain(dx,dy);
 		//System.exit(0);
         a.addKeyListener(a);
         a.addMouseListener(a);
@@ -545,7 +545,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 				monde.Refresh();
 				cpt_pas = 0;
 				marcher = 0;
-				terrain.Stockage_passage();
+			//	terrain.Stockage_passage();
 				Monde.grandir();
 				//M.reproduction();
 				monde.depart_feu();
