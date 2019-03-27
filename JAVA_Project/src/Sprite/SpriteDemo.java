@@ -314,6 +314,18 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 								if ( Hericendre.getSens() == 3 ) { //va en haut
 									g2.drawImage(PokemonFeuMove[1][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) - SpriteDemo.marcher,spriteLength,spriteLength, frame);
 								}
+								if ( Hericendre.getSens() == 4 ) { //reste sur place
+									g2.drawImage(PokemonFeuMove[2][pas],spriteLength*(i-a1) ,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+								}
+								if ( Hericendre.getSens() == 5 ) { //reste sur place
+									g2.drawImage(PokemonFeuMove[3][pas],spriteLength*(i-a1) ,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+								}
+								if ( Hericendre.getSens() == 6 ) { //reste sur place
+									g2.drawImage(PokemonFeuMove[0][pas],spriteLength*(i-a1) ,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+								}
+								if ( Hericendre.getSens() == 7 ) { //reste sur place
+									g2.drawImage(PokemonFeuMove[1][pas],spriteLength*(i-a1) ,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+								}
 							}
 							if(Hericendre.getEvolution() == true) {
 								
@@ -329,6 +341,9 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 								}
 								if ( Hericendre.getSens() == 3 ) { //va en haut
 									g2.drawImage(PokemonFeuEvolueMove[1][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) - SpriteDemo.marcher,spriteLength,spriteLength, frame);
+								}
+								if ( Hericendre.getSens() == 4 ) { //reste sur place
+									g2.drawImage(PokemonFeuEvolueMove[1][pas],spriteLength*(i-a1) ,spriteLength*(j-a2) ,spriteLength,spriteLength, frame);
 								}
 							}
 							continue;
@@ -515,8 +530,8 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
     } 
 	
 	public static void main(String[] args) {
-		Terrain terrain= new Terrain(dx=100,dy=100);
-		Monde monde = new Monde(dx,dy,0.1,0.8);
+		Terrain terrain= new Terrain(dx=35,dy=50);
+		Monde monde = new Monde(dx,dy,0.1,0.001);
 		SpriteDemo a =new SpriteDemo();
 		//System.exit(0);
         a.addKeyListener(a);
@@ -539,15 +554,15 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 				pas = 0;
 			}
 			if(cpt_pas % 8 == 0) {
-				monde.pomme_pop(step);
-				Pomme.duree();
-				Pomme.delete();
+			//	monde.pomme_pop(step);
+			//	Pomme.duree();
+			//	Pomme.delete();
 				monde.Refresh();
 				cpt_pas = 0;
 				marcher = 0;
 			//	terrain.Stockage_passage();
 				Monde.grandir();
-				//M.reproduction();
+				M.reproduction();
 				monde.depart_feu();
 				monde.propagation_F();
 				monde.enfeu();

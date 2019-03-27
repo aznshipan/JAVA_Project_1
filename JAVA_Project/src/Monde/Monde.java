@@ -131,17 +131,31 @@ public class Monde {
 	public void Refresh() {
 		for (int i=0;i<carte_Ag.size();i++) {
 			if(i<carte_Ag.size()) {
-				if (carte_Ag.get(i) instanceof M1) {	
+				if (carte_Ag.get(i) instanceof M1) {
+					System.out.println("Un Hericendre ici : "+ ((M)carte_Ag.get(i)).getX() +" "+ ((M)carte_Ag.get(i)).getY()+" Sol "+Terrain.getTerrain()[((M)carte_Ag.get(i)).getX()][((M)carte_Ag.get(i)).getY()][1]);
+					System.out.println("          "+((M)carte_Ag.get(i)).getX() +" "+ ((((M)carte_Ag.get(i)).getY()-1+dy)%dy)+" Sol "+Terrain.getTerrain()[((M)carte_Ag.get(i)).getX()][((((M)carte_Ag.get(i)).getY()-1+dy)%dy)][1]);
+					System.out.print(""+((((M)carte_Ag.get(i)).getX()-1+dx)%dx) +" "+ (((M)carte_Ag.get(i)).getY())+" Sol "+Terrain.getTerrain()[((((M)carte_Ag.get(i)).getX()-1+dx)%dx)][(((M)carte_Ag.get(i)).getY())][1]);
+					System.out.println("                    "+((((M)carte_Ag.get(i)).getX()+1+dx)%dx) +" "+ (((M)carte_Ag.get(i)).getY())+" Sol "+Terrain.getTerrain()[((((M)carte_Ag.get(i)).getX()+1+dx)%dx)][(((M)carte_Ag.get(i)).getY())][1]);
+					System.out.println("          "+((M)carte_Ag.get(i)).getX() +" "+ ((((M)carte_Ag.get(i)).getY()+1+dy)%dy)+" Sol "+Terrain.getTerrain()[((M)carte_Ag.get(i)).getX()][((((M)carte_Ag.get(i)).getY()+1+dy)%dy)][1]);
+
 					if(Terrain.getTerrain()[((M1)carte_Ag.get(i)).getX()][((M1)carte_Ag.get(i)).getY()][1] <= 10) {
+						System.out.println("UN HERICENDRE EST MORT ! "+ ((M)carte_Ag.get(i)).getX() +" "+ ((M)carte_Ag.get(i)).getY()+" Sol "+Terrain.getTerrain()[((M)carte_Ag.get(i)).getX()][((M)carte_Ag.get(i)).getY()][1]);
 						carte_Ag.remove(i);
+						System.exit(0);
 					}
 				}
 			}
 		}
 		for (int i=0;i<carte_Ag.size();i++) {
 			if(i<carte_Ag.size()) {
-				if (carte_Ag.get(i) instanceof M) {	
-					((M) carte_Ag.get(i)).move(dx, dy);
+				if (carte_Ag.get(i) instanceof M) {
+					if(((M)carte_Ag.get(i)).getSens() >= 0 && ((M)carte_Ag.get(i)).getSens() <= 3) {
+						((M) carte_Ag.get(i)).move(dx, dy);
+					}
+					else {
+						System.out.println("Pas bouger !");
+						System.out.println("-------------");
+					}
 					((M) carte_Ag.get(i)).setSens();
 				}
 				/*if (carte_Ag.get(i) instanceof Braconnier) {

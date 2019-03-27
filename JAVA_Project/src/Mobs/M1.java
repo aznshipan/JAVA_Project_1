@@ -8,6 +8,39 @@ import Monde.Terrain;
 public class M1 extends M{
 	public M1(int x, int y) {
 		super(x, y);
+		int x1=this.x,y1=this.y;
+		if (this.sens == 0) {
+			x1=(x1-1+Monde.getDx())%Monde.getDx();
+			if(Terrain.getTerrain()[x1][y1][1] <= 10) {
+				System.out.println("je vais tomber");
+				this.sens=4;
+				return;
+			}
+		}
+		if (this.sens == 1) {
+			x1=(x1+1+Monde.getDx())%Monde.getDx();
+			if(Terrain.getTerrain()[x1][y1][1] <= 10) {
+				System.out.println("je vais tomber");
+				this.sens=5;
+				return;
+			}
+		}
+		if (this.sens == 2) {
+			y1=(y1+1+Monde.getDy())%Monde.getDy();
+			if(Terrain.getTerrain()[x1][y1][1] <= 10) {
+				System.out.println("je vais tomber");
+				this.sens=6;
+				return;
+			}
+		}
+		if (this.sens == 3) {
+			y1=(y1-1+Monde.getDy())%Monde.getDy();
+			if(Terrain.getTerrain()[x1][y1][1] <= 10) {
+				System.out.println("je vais tomber");
+				this.sens=7;
+				return;
+			}
+		}
 		atk=(int) (Math.random()*100);
 		pv=500;
 		S="X";
@@ -58,37 +91,7 @@ public class M1 extends M{
 		}
 	}
 	public void setSens() {
-		System.out.println("getSens()");
-		int cpt=0;
-		int tab_A[] = new int[4];
-for (int i=0;i<Monde.getcarte_Ab().size();i++) {
-			
-			if (Monde.getcarte_Ab().get(i).getX()==this.x-1 && Monde.getcarte_Ab().get(i).getY()==this.y || Terrain.getTerrain()[(this.x-1+Monde.getDx())%Monde.getDx()][this.y][1] <= 10 ) {
-				tab_A[0]=i;
-				cpt+=1;
-			}
-			if (Monde.getcarte_Ab().get(i).getX()==this.x+1 && Monde.getcarte_Ab().get(i).getY()==this.y || Terrain.getTerrain()[(this.x+1+Monde.getDx())%Monde.getDx()][this.y][1] <= 10) {
-				tab_A[1]=i;
-				cpt+=1;
-			}
-			if (Monde.getcarte_Ab().get(i).getX()==this.x && Monde.getcarte_Ab().get(i).getY()==this.y+1 || Terrain.getTerrain()[this.x][(this.y+1+Monde.getDy())%Monde.getDy()][1] <= 10) {
-				tab_A[2]=i;
-				cpt+=1;
-			}
-			if (Monde.getcarte_Ab().get(i).getX()==this.x && Monde.getcarte_Ab().get(i).getY()==this.y-1 || Terrain.getTerrain()[this.x][(this.y-1+Monde.getDy())%Monde.getDy()][1] <= 10) {
-				tab_A[3]=i;
-				cpt+=1;
-			}
-		}
-		if (cpt == 4) {
-			Monde.getcarte_Ab().get(tab_A[0]).setEnfeu(true);
-			Monde.getcarte_Ab().get(tab_A[1]).setEnfeu(true);
-			Monde.getcarte_Ab().get(tab_A[2]).setEnfeu(true);
-			Monde.getcarte_Ab().get(tab_A[3]).setEnfeu(true);
-			Monde.getcarte_Ag().remove(this);
-			return ;
-		}
-		
+		System.out.println("setSens()");
 		for(int m=  0; m < Monde.getcarte_P().size();m++) {
 			if(((Pomme) Monde.getcarte_P().get(m)).getX() == this.x-1 && ((Pomme) Monde.getcarte_P().get(m)).getY() == this.y) {
 					this.sens = 0;
@@ -108,48 +111,56 @@ for (int i=0;i<Monde.getcarte_Ab().size();i++) {
 				}
 			
 		}
-		/*while(true) {
-			System.out.println("SetSens()");
-			this.sens = (int)(Math.random()*4);
-			if(this.sens == 0 && Terrain.getTerrain()[(this.x-1+Monde.getDx())%Monde.getDx()][this.y][2] == 0 && Terrain.getTerrain()[(this.x-1+Monde.getDx())%Monde.getDx()][this.y][1] > 10) {	
-				break;
-			}
-				
-			if(this.sens == 1 && Terrain.getTerrain()[(this.x+1+Monde.getDx())%Monde.getDx()][this.y][2] == 0 &&  Terrain.getTerrain()[(this.x+1+Monde.getDx())%Monde.getDx()][this.y][1] > 10) {
-				break;
-				
-			}
-			if(this.sens == 2 && Terrain.getTerrain()[this.x][(this.y+1+Monde.getDy())%Monde.getDy()][2] == 0 && Terrain.getTerrain()[this.x][(this.y+1+Monde.getDy())%Monde.getDy()][1] > 10) {
-				break;
-
-			}
-			if(this.sens == 3 && Terrain.getTerrain()[this.x][(this.y-1+Monde.getDy())%Monde.getDy()][2] == 0 && Terrain.getTerrain()[this.x][(this.y-1+Monde.getDy())%Monde.getDy()][1] > 10) {
-				break;
-		
-			}
-		}*/
+		if ((Terrain.getTerrain()[(this.x-1+Monde.getDx())%Monde.getDx()][this.y][2] == 1 || Terrain.getTerrain()[(this.x-1+Monde.getDx())%Monde.getDx()][this.y][1] <= 10) 
+				&& (Terrain.getTerrain()[(this.x+1+Monde.getDx())%Monde.getDx()][this.y][2] == 1 || Terrain.getTerrain()[(this.x+1+Monde.getDx())%Monde.getDx()][this.y][1] <= 10)
+				&& (Terrain.getTerrain()[this.x][(this.y+1+Monde.getDy())%Monde.getDy()][2] == 1 || Terrain.getTerrain()[this.x][(this.y+1+Monde.getDy())%Monde.getDy()][1] <= 10) 
+				&& (Terrain.getTerrain()[this.x][(this.y-1+Monde.getDy())%Monde.getDy()][2] == 1 || Terrain.getTerrain()[this.x][(this.y-1+Monde.getDy())%Monde.getDy()][1] <= 10)) 
+		{
+			Monde.getcarte_Ag().remove(this);
+			return;
+		}
 		int x1,y1;
 		boolean boolA=false;
 		do {
-		//	System.out.println("BoucleSens");
+			System.out.println("BoucleSens");
 			boolA=false;
 			x1=this.x;
 			y1=this.y;
 			this.sens = (int)(Math.random()*4);
 			if (this.sens == 0) {
 				x1=(x1-1+Monde.getDx())%Monde.getDx();
+				if(Terrain.getTerrain()[x1][y1][1] <= 10) {
+					System.out.println("je vais tomber");
+					this.sens=4;
+					return;
+				}
 			}
 			if (this.sens == 1) {
 				x1=(x1+1+Monde.getDx())%Monde.getDx();
+				if(Terrain.getTerrain()[x1][y1][1] <= 10) {
+					System.out.println("je vais tomber");
+					this.sens=5;
+					return;
+				}
 			}
 			if (this.sens == 2) {
 				y1=(y1+1+Monde.getDy())%Monde.getDy();
+				if(Terrain.getTerrain()[x1][y1][1] <= 10) {
+					System.out.println("je vais tomber");
+					this.sens=6;
+					return;
+				}
 			}
 			if (this.sens == 3) {
 				y1=(y1-1+Monde.getDy())%Monde.getDy();
+				if(Terrain.getTerrain()[x1][y1][1] <= 10) {
+					System.out.println("je vais tomber");
+					this.sens=7;
+					return;
+				}
 			}
 			for (int i=0;i<Monde.getcarte_Ab().size();i++) {
-				if ((Monde.getcarte_Ab().get(i).getX() == x1 && Monde.getcarte_Ab().get(i).getY() == y1) /*|| Terrain.getTerrain()[x1][y1][1] > 10*/) {
+				if ((Monde.getcarte_Ab().get(i).getX() == x1 && Monde.getcarte_Ab().get(i).getY() == y1)) {
 					boolA=true;
 					break;
 				}
