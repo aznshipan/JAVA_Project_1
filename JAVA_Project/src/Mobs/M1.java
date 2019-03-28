@@ -12,7 +12,6 @@ public class M1 extends M{
 		if (this.sens == 0) {
 			x1=(x1-1+Monde.getDx())%Monde.getDx();
 			if(Terrain.getTerrain()[x1][y1][1] <= 10) {
-				System.out.println("je vais tomber");
 				this.sens=4;
 				return;
 			}
@@ -20,7 +19,6 @@ public class M1 extends M{
 		if (this.sens == 1) {
 			x1=(x1+1+Monde.getDx())%Monde.getDx();
 			if(Terrain.getTerrain()[x1][y1][1] <= 10) {
-				System.out.println("je vais tomber");
 				this.sens=5;
 				return;
 			}
@@ -28,7 +26,6 @@ public class M1 extends M{
 		if (this.sens == 2) {
 			y1=(y1+1+Monde.getDy())%Monde.getDy();
 			if(Terrain.getTerrain()[x1][y1][1] <= 10) {
-				System.out.println("je vais tomber");
 				this.sens=6;
 				return;
 			}
@@ -36,7 +33,6 @@ public class M1 extends M{
 		if (this.sens == 3) {
 			y1=(y1-1+Monde.getDy())%Monde.getDy();
 			if(Terrain.getTerrain()[x1][y1][1] <= 10) {
-				System.out.println("je vais tomber");
 				this.sens=7;
 				return;
 			}
@@ -51,7 +47,6 @@ public class M1 extends M{
 	}
 
 	public void move(int dx, int dy) {
-		System.out.println("Move()");
 		if (this.sens == 0) {
 			this.x=(this.x-1+dx)%dx;
 		}
@@ -91,7 +86,6 @@ public class M1 extends M{
 		}
 	}
 	public void setSens() {
-		System.out.println("setSens()");
 		for(int m=  0; m < Monde.getcarte_P().size();m++) {
 			if(((Pomme) Monde.getcarte_P().get(m)).getX() == this.x-1 && ((Pomme) Monde.getcarte_P().get(m)).getY() == this.y) {
 					this.sens = 0;
@@ -122,7 +116,6 @@ public class M1 extends M{
 		int x1,y1;
 		boolean boolA=false;
 		do {
-			System.out.println("BoucleSens");
 			boolA=false;
 			x1=this.x;
 			y1=this.y;
@@ -130,7 +123,6 @@ public class M1 extends M{
 			if (this.sens == 0) {
 				x1=(x1-1+Monde.getDx())%Monde.getDx();
 				if(Terrain.getTerrain()[x1][y1][1] <= 10) {
-					System.out.println("je vais tomber");
 					this.sens=4;
 					return;
 				}
@@ -138,7 +130,6 @@ public class M1 extends M{
 			if (this.sens == 1) {
 				x1=(x1+1+Monde.getDx())%Monde.getDx();
 				if(Terrain.getTerrain()[x1][y1][1] <= 10) {
-					System.out.println("je vais tomber");
 					this.sens=5;
 					return;
 				}
@@ -146,7 +137,6 @@ public class M1 extends M{
 			if (this.sens == 2) {
 				y1=(y1+1+Monde.getDy())%Monde.getDy();
 				if(Terrain.getTerrain()[x1][y1][1] <= 10) {
-					System.out.println("je vais tomber");
 					this.sens=6;
 					return;
 				}
@@ -154,7 +144,6 @@ public class M1 extends M{
 			if (this.sens == 3) {
 				y1=(y1-1+Monde.getDy())%Monde.getDy();
 				if(Terrain.getTerrain()[x1][y1][1] <= 10) {
-					System.out.println("je vais tomber");
 					this.sens=7;
 					return;
 				}

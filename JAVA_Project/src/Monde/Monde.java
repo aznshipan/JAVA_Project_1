@@ -94,6 +94,10 @@ public class Monde {
 				bool_A=false;
 				x1= (int) (Math.random()*Monde.getDx());
 				y1 =(int) (Math.random()*Monde.getDy());
+				if(Terrain.getTerrain()[x1][y1][1] <= 10) {
+					bool_A=true;
+					break;
+				}
 				for (int i=0;i<Monde.getcarte_Ab().size();i++) {
 					if (Monde.getcarte_Ab().get(i).getX() == x1 && Monde.getcarte_Ab().get(i).getY() == y1) {
 						bool_A=true;
@@ -101,8 +105,12 @@ public class Monde {
 					}
 				}
 			}while(bool_A);
-			Pomme apple = new Pomme(x1, y1);
-			carte_P.add(apple);
+			if(Terrain.getTerrain()[x1][y1][1] > 10) {
+				Pomme apple = new Pomme(x1, y1);
+				carte_P.add(apple);
+			}else {
+				pomme_pop(cpt);
+			}
 		}
 	}
 	public static int compteM() {
@@ -132,16 +140,8 @@ public class Monde {
 		for (int i=0;i<carte_Ag.size();i++) {
 			if(i<carte_Ag.size()) {
 				if (carte_Ag.get(i) instanceof M1) {
-					System.out.println("Un Hericendre ici : "+ ((M)carte_Ag.get(i)).getX() +" "+ ((M)carte_Ag.get(i)).getY()+" Sol "+Terrain.getTerrain()[((M)carte_Ag.get(i)).getX()][((M)carte_Ag.get(i)).getY()][1]);
-					System.out.println("          "+((M)carte_Ag.get(i)).getX() +" "+ ((((M)carte_Ag.get(i)).getY()-1+dy)%dy)+" Sol "+Terrain.getTerrain()[((M)carte_Ag.get(i)).getX()][((((M)carte_Ag.get(i)).getY()-1+dy)%dy)][1]);
-					System.out.print(""+((((M)carte_Ag.get(i)).getX()-1+dx)%dx) +" "+ (((M)carte_Ag.get(i)).getY())+" Sol "+Terrain.getTerrain()[((((M)carte_Ag.get(i)).getX()-1+dx)%dx)][(((M)carte_Ag.get(i)).getY())][1]);
-					System.out.println("                    "+((((M)carte_Ag.get(i)).getX()+1+dx)%dx) +" "+ (((M)carte_Ag.get(i)).getY())+" Sol "+Terrain.getTerrain()[((((M)carte_Ag.get(i)).getX()+1+dx)%dx)][(((M)carte_Ag.get(i)).getY())][1]);
-					System.out.println("          "+((M)carte_Ag.get(i)).getX() +" "+ ((((M)carte_Ag.get(i)).getY()+1+dy)%dy)+" Sol "+Terrain.getTerrain()[((M)carte_Ag.get(i)).getX()][((((M)carte_Ag.get(i)).getY()+1+dy)%dy)][1]);
-
 					if(Terrain.getTerrain()[((M1)carte_Ag.get(i)).getX()][((M1)carte_Ag.get(i)).getY()][1] <= 10) {
-						System.out.println("UN HERICENDRE EST MORT ! "+ ((M)carte_Ag.get(i)).getX() +" "+ ((M)carte_Ag.get(i)).getY()+" Sol "+Terrain.getTerrain()[((M)carte_Ag.get(i)).getX()][((M)carte_Ag.get(i)).getY()][1]);
 						carte_Ag.remove(i);
-						System.exit(0);
 					}
 				}
 			}
@@ -153,8 +153,6 @@ public class Monde {
 						((M) carte_Ag.get(i)).move(dx, dy);
 					}
 					else {
-						System.out.println("Pas bouger !");
-						System.out.println("-------------");
 					}
 					((M) carte_Ag.get(i)).setSens();
 				}
