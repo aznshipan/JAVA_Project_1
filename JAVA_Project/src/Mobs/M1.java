@@ -11,28 +11,28 @@ public class M1 extends M{
 		int x1=this.x,y1=this.y;
 		if (this.sens == 0) {
 			x1=(x1-1+Monde.getDx())%Monde.getDx();
-			if(Terrain.getTerrain()[x1][y1][1] <= 10) {
+			if(Terrain.getTerrain()[x1][y1][1] < 205 || Terrain.getTerrain()[x1][y1][1] >= 239) {
 				this.sens=4;
 				return;
 			}
 		}
 		if (this.sens == 1) {
 			x1=(x1+1+Monde.getDx())%Monde.getDx();
-			if(Terrain.getTerrain()[x1][y1][1] <= 10) {
+			if(Terrain.getTerrain()[x1][y1][1] < 205 || Terrain.getTerrain()[x1][y1][1] >= 239) {
 				this.sens=5;
 				return;
 			}
 		}
 		if (this.sens == 2) {
 			y1=(y1+1+Monde.getDy())%Monde.getDy();
-			if(Terrain.getTerrain()[x1][y1][1] <= 10) {
+			if(Terrain.getTerrain()[x1][y1][1] < 205 || Terrain.getTerrain()[x1][y1][1] >= 239) {
 				this.sens=6;
 				return;
 			}
 		}
 		if (this.sens == 3) {
 			y1=(y1-1+Monde.getDy())%Monde.getDy();
-			if(Terrain.getTerrain()[x1][y1][1] <= 10) {
+			if(Terrain.getTerrain()[x1][y1][1] < 205 || Terrain.getTerrain()[x1][y1][1] >= 239) {
 				this.sens=7;
 				return;
 			}
@@ -122,28 +122,28 @@ public class M1 extends M{
 			this.sens = (int)(Math.random()*4);
 			if (this.sens == 0) {
 				x1=(x1-1+Monde.getDx())%Monde.getDx();
-				if(Terrain.getTerrain()[x1][y1][1] <= 10) {
+				if(Terrain.getTerrain()[x1][y1][1] < 205 || Terrain.getTerrain()[x1][y1][1] >= 239) {
 					this.sens=4;
 					return;
 				}
 			}
 			if (this.sens == 1) {
 				x1=(x1+1+Monde.getDx())%Monde.getDx();
-				if(Terrain.getTerrain()[x1][y1][1] <= 10) {
+				if(Terrain.getTerrain()[x1][y1][1] < 205 || Terrain.getTerrain()[x1][y1][1] >= 239) {
 					this.sens=5;
 					return;
 				}
 			}
 			if (this.sens == 2) {
 				y1=(y1+1+Monde.getDy())%Monde.getDy();
-				if(Terrain.getTerrain()[x1][y1][1] <= 10) {
+				if(Terrain.getTerrain()[x1][y1][1] < 205 || Terrain.getTerrain()[x1][y1][1] >= 239) {
 					this.sens=6;
 					return;
 				}
 			}
 			if (this.sens == 3) {
 				y1=(y1-1+Monde.getDy())%Monde.getDy();
-				if(Terrain.getTerrain()[x1][y1][1] <= 10) {
+				if(Terrain.getTerrain()[x1][y1][1] < 205 || Terrain.getTerrain()[x1][y1][1] >= 239) {
 					this.sens=7;
 					return;
 				}

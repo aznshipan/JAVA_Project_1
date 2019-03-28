@@ -34,7 +34,7 @@ public class Monde {
 		dy=y;
 		for (int i=0;i<dx;i++) {
 			for(int j=0;j<dy;j++) {
-					if(Terrain.getTerrain()[i][j][1] > 10) {
+					if(Terrain.getTerrain()[i][j][1] >= 205 && Terrain.getTerrain()[i][j][1] < 239) {
 						if(Math.random() < percolation_Ab) {
 						Terrain.getTerrain()[i][j][2]=1;
 						Arbre arbres = new Arbre(i, j);
@@ -45,7 +45,7 @@ public class Monde {
 		}
 		for (int i=0;i<dx;i++) {
 			for(int j=0;j<dy;j++) {
-					if(Terrain.getTerrain()[i][j][1] > 10 && Terrain.getTerrain()[i][j][2]==0) {
+					if(Terrain.getTerrain()[i][j][1] >= 205 && Terrain.getTerrain()[i][j][2]==0 && Terrain.getTerrain()[i][j][1] < 239) {
 						if(Math.random() < taux_agent) {
 						M1 monstre = new M1(i, j);
 						carte_Ag.add(monstre);
@@ -94,7 +94,7 @@ public class Monde {
 				bool_A=false;
 				x1= (int) (Math.random()*Monde.getDx());
 				y1 =(int) (Math.random()*Monde.getDy());
-				if(Terrain.getTerrain()[x1][y1][1] <= 10) {
+				if(Terrain.getTerrain()[x1][y1][1] < 205) {
 					bool_A=true;
 					break;
 				}
@@ -105,7 +105,7 @@ public class Monde {
 					}
 				}
 			}while(bool_A);
-			if(Terrain.getTerrain()[x1][y1][1] > 10) {
+			if(Terrain.getTerrain()[x1][y1][1] >= 205 && Terrain.getTerrain()[x1][y1][1] < 239) {
 				Pomme apple = new Pomme(x1, y1);
 				carte_P.add(apple);
 			}else {
@@ -161,17 +161,6 @@ public class Monde {
 				}*/
 			}
 		}
-		for (int i=0;i<carte_Ab.size();i++) {
-			if(i<carte_Ab.size()) {
-				if (carte_Ab.get(i).isEnfeu()) {	
-					int x = carte_Ab.get(i).getX();
-					int y = carte_Ab.get(i).getY();
-					Terrain.getTerrain()[x][y][2] = 0;
-					carte_Ab.remove(i);
-					
-				}
-			}
-		}
 		for (int i=0;i<carte_P.size();i++) {
 			((Pomme) carte_P.get(i)).pourrir();
 		}
@@ -187,48 +176,49 @@ public class Monde {
 	public void depart_feu() {
 		int cpt;
 		for (int i=0;i<carte_Ab.size();i++) {
-			for (int j=0;j<carte_Ag.size();j++) {
-				cpt=0;
-				if (carte_Ag.get(j) instanceof M1 && ((M) carte_Ag.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX()-1 && ((M) carte_Ag.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY())
-					cpt+=1;
-				if (carte_Ag.get(j) instanceof M1 && ((M) carte_Ag.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX()+1 && ((M) carte_Ag.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY())
-					cpt+=1;
-				if (carte_Ag.get(j) instanceof M1 && ((M) carte_Ag.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX() && ((M) carte_Ag.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY()+1)
-					cpt+=1;
-				if (carte_Ag.get(j) instanceof M1 && ((M) carte_Ag.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX() && ((M) carte_Ag.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY()-1)
-					cpt+=1;
-				if (cpt ==1)// && Math.random()<0.05)
-					((Arbre) carte_Ab.get(i)).setEnfeu(true);
-				if (cpt ==2)// && Math.random()<0.01)
-					((Arbre) carte_Ab.get(i)).setEnfeu(true);
-				if (cpt ==3)// && Math.random()<0.15)
-					((Arbre) carte_Ab.get(i)).setEnfeu(true);
-				if (cpt ==4)// && Math.random()<0.20)
-					((Arbre) carte_Ab.get(i)).setEnfeu(true);
+				for (int j=0;j<carte_Ag.size();j++) {
+					cpt=0;
+					if (carte_Ag.get(j) instanceof M1 && ((M) carte_Ag.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX()-1 && ((M) carte_Ag.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY() && ((Arbre) carte_Ab.get(i)).getGrille()==false)
+						cpt+=1;
+					if (carte_Ag.get(j) instanceof M1 && ((M) carte_Ag.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX()+1 && ((M) carte_Ag.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY() && ((Arbre) carte_Ab.get(i)).getGrille()==false)
+						cpt+=1;
+					if (carte_Ag.get(j) instanceof M1 && ((M) carte_Ag.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX() && ((M) carte_Ag.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY()+1 && ((Arbre) carte_Ab.get(i)).getGrille()==false)
+						cpt+=1;
+					if (carte_Ag.get(j) instanceof M1 && ((M) carte_Ag.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX() && ((M) carte_Ag.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY()-1 && ((Arbre) carte_Ab.get(i)).getGrille()==false)
+						cpt+=1;
+					if (cpt ==1)// && Math.random()<0.05)
+						((Arbre) carte_Ab.get(i)).setEnfeu(true);
+					if (cpt ==2)// && Math.random()<0.01)
+						((Arbre) carte_Ab.get(i)).setEnfeu(true);
+					if (cpt ==3)// && Math.random()<0.15)
+						((Arbre) carte_Ab.get(i)).setEnfeu(true);
+					if (cpt ==4)// && Math.random()<0.20)
+						((Arbre) carte_Ab.get(i)).setEnfeu(true);
+				}
 			}
 						
-		}
+		
 	}
 	
 	public void propagation_F() {
 		//System.out.println(""+carte_Ag_depart.toString());
 		//System.out.println(""+carte_Ag.toString());
 		
-		int a;
 		for (int i=0;i<carte_Ab.size();i++) {
 			if (((Arbre) carte_Ab.get(i)).isEnfeu()) {
 				for (int j=0;j<carte_Ab.size();j++) {
-					if (((Arbre) carte_Ab.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX()-1 && ((Arbre) carte_Ab.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY())
-						((Arbre) carte_Ab.get(j)).setBrulé(true);
-					
-					if (((Arbre) carte_Ab.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX()+1 && ((Arbre) carte_Ab.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY())
-						((Arbre) carte_Ab.get(j)).setBrulé(true);
-					
-					if (((Arbre) carte_Ab.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX() && ((Arbre) carte_Ab.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY()+1)
-						((Arbre) carte_Ab.get(j)).setBrulé(true);
-					
-					if (((Arbre) carte_Ab.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX() && ((Arbre) carte_Ab.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY()-1)
-						((Arbre) carte_Ab.get(j)).setBrulé(true);
+						if (((Arbre) carte_Ab.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX()-1 && ((Arbre) carte_Ab.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY() && carte_Ab.get(j).getGrille()==false)
+							((Arbre) carte_Ab.get(j)).setBrulé(true);
+						
+						if (((Arbre) carte_Ab.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX()+1 && ((Arbre) carte_Ab.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY() && carte_Ab.get(j).getGrille()==false)
+							((Arbre) carte_Ab.get(j)).setBrulé(true);
+						
+						if (((Arbre) carte_Ab.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX() && ((Arbre) carte_Ab.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY()+1 && carte_Ab.get(j).getGrille()==false)
+							((Arbre) carte_Ab.get(j)).setBrulé(true);
+						
+						if (((Arbre) carte_Ab.get(j)).getX()==((Arbre) carte_Ab.get(i)).getX() && ((Arbre) carte_Ab.get(j)).getY()==((Arbre) carte_Ab.get(i)).getY()-1 && carte_Ab.get(j).getGrille()==false)
+							((Arbre) carte_Ab.get(j)).setBrulé(true);
+						
 				}
 			}
 		}
@@ -239,6 +229,33 @@ public class Monde {
 		for (int i=0;i<carte_Ab.size();i++) {
 			if (((Arbre) carte_Ab.get(i)).isBrulé()) {
 				((Arbre) carte_Ab.get(i)).setEnfeu(true);
+			}
+		}
+	}
+	public void arbreMourir() {
+		for (int i=0;i<carte_Ab.size();i++) {
+			if(i<carte_Ab.size()) {
+				if(carte_Ab.get(i).getGrille())	{
+					carte_Ab.get(i).IncrementResidu();
+				}
+				
+				if(carte_Ab.get(i).getResidu()>=5 && carte_Ab.get(i).getGrille()) {
+					int x = carte_Ab.get(i).getX();
+					int y = carte_Ab.get(i).getY();
+					Terrain.getTerrain()[x][y][2] = 0;
+					carte_Ab.remove(i);
+					continue;
+				}
+				if(carte_Ab.get(i).isEnfeu() && carte_Ab.get(i).getGrille()) {
+					carte_Ab.get(i).setEnfeu(false);
+					carte_Ab.get(i).setBrulé(false);
+				}
+				
+				if (!carte_Ab.get(i).getGrille() && carte_Ab.get(i).isEnfeu()) {
+					Terrain.getTerrain()[carte_Ab.get(i).getX()][carte_Ab.get(i).getY()][1]=207;
+					carte_Ab.get(i).setGrille(true);
+				}
+				
 			}
 		}
 	}

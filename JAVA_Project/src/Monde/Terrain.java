@@ -35,17 +35,13 @@ public class Terrain {
 			for (int j=0;j<dy;j++) {
 				Color c = new Color(image.getRGB(i, j));
 				int couleur = c.getRed();
-				terrain[i][j][0]=0;
-				terrain[i][j][1]=couleur / 20;
+				terrain[i][j][0]=couleur;
+				terrain[i][j][1]=couleur;
 				terrain[i][j][2]=0;
-				/*for(int m=  0; m < Monde.getcarte_Ab().size();m++) {
-					if(Monde.getcarte_Ab().get(m).getX()==i && Monde.getcarte_Ab().get(m).getY()==j) {
-						terrain[i][j][2]=1;
-					}
-				}*/
-				//System.out.print(" "+ terrain[i][j][2]);
+				
+				System.out.print(" "+ terrain[i][j][1]);
 			}
-		//	System.out.println("");
+			System.out.println("");
 		}
 	}
 	public int cpt;
