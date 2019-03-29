@@ -56,6 +56,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 	private Image Flamme;
 	private Image rochevolcan;
 	private Image Lave;
+	private Image pluie;
 	public static int dx;
 	public static int dy;
 	private int x;
@@ -93,6 +94,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 			Flamme = Toolkit.getDefaultToolkit().createImage("Flamme.gif");
 			rochevolcan = ImageIO.read(new File("roche1.png"));
 			Lave = ImageIO.read(new File("lava.png"));
+			pluie = Toolkit.getDefaultToolkit().createImage("Pluie.gif");
 			
 			PokemonFeuMove = new Image[4][8]; //Hericendre
 			PokemonFeuMove[0][0] = ImageIO.read(new File("Hericendre_walkdown1.png"));
@@ -276,9 +278,9 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 			for ( int j = a2 ; j < wy ; j++ ) {
 					try{
 						g2.drawImage(grassSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
-					if (Terrain.getTerrain()[i][j][1] >= 205 && Terrain.getTerrain()[i][j][1] <= 209)
+					if (Terrain.getTerrain()[i][j][1] >= (Terrain.getTerre() - 2) && Terrain.getTerrain()[i][j][1] <= (Terrain.getTerre()+2))
 						g2.drawImage(terreSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
-					if (Terrain.getTerrain()[i][j][1] < 205)
+					if (Terrain.getTerrain()[i][j][1] < Terrain.getEau())
 						g2.drawImage(waterSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
 					for (int a=0;a<Monde.getcarte_Ab().size();a++) {
 						if (Monde.getcarte_Ab().get(a).getX()==i && Monde.getcarte_Ab().get(a).getY()==j) {
@@ -295,9 +297,9 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 							}
 						}
 												}
-					if (Terrain.getTerrain()[i][j][0] >= 239 && Terrain.getTerrain()[i][j][0] < 248) {
-						if(Terrain.getTerrain()[i][j][0] < 241) {
-							if(Terrain.getTerrain()[i][j][0] == 239) {
+					if (Terrain.getTerrain()[i][j][0] >= Terrain.contourRoche() && Terrain.getTerrain()[i][j][0] < Terrain.sommetVolcan()) {
+						if(Terrain.getTerrain()[i][j][0] < (Terrain.sommetVolcan()-7)) {
+							if(Terrain.getTerrain()[i][j][0] == Terrain.contourRoche()) {
 								g2.drawImage(rochevolcan,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
 							}
 							else {
@@ -326,7 +328,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 		for ( int i = a1 ; i < wx ; i++ ) {
 			for ( int j = a2 ; j < wy ; j++ ) {
 				try {
-					if(Terrain.getTerrain()[i][j][0] >= 242 && Terrain.getTerrain()[i][j][0] < 246) {
+					if(Terrain.getTerrain()[i][j][0] >= (Terrain.contourRoche() + 3) && Terrain.getTerrain()[i][j][0] < (Terrain.sommetVolcan() - 2)) {
 						g2.drawImage(rochevolcan,spriteLength*(i-a1)-35,spriteLength*(j-a2)-15,spriteLength+35,spriteLength+15, frame);
 					}
 					
@@ -336,7 +338,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 		for ( int i = a1 ; i < wx ; i++ ) {
 			for ( int j = a2 ; j < wy ; j++ ) {
 				try {
-					if(Terrain.getTerrain()[i][j][0] >= 246 && Terrain.getTerrain()[i][j][0] <= 247) {
+					if(Terrain.getTerrain()[i][j][0] >= (Terrain.contourRoche() + 7) && Terrain.getTerrain()[i][j][0] <= (Terrain.sommetVolcan() - 1)) {
 						g2.drawImage(rochevolcan,spriteLength*(i-a1)-35,spriteLength*(j-a2)-15,spriteLength+35,spriteLength+15, frame);
 					}
 					
@@ -346,7 +348,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 		for ( int i = a1 ; i < wx ; i++ ) {
 			for ( int j = a2 ; j < wy ; j++ ) {
 				try {
-					if(Terrain.getTerrain()[i][j][1] == 255) {
+					if(Terrain.getTerrain()[i][j][1] == Terrain.SolLave()) {
 						g2.drawImage(Lave,spriteLength*(i-a1)-35,spriteLength*(j-a2)-15,spriteLength+35,spriteLength+15, frame);
 					}
 					
@@ -451,9 +453,31 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 							}
 							continue;
 						}
+						if (array_m.get(m) instanceof Braconnier && ((Braconnier)array_m.get(m)).getX()==i && ((Braconnier)array_m.get(m)).getY()==j) {
+							Braconnier braconnier = (Braconnier)(array_m.get(m));
+							
+								if ( braconnier.getSens() == 0 ) { //va a gauche
+									g2.drawImage(Chasseur,spriteLength*(i-a1) - SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+								}
+								if ( braconnier.getSens() == 1 ) { //va a droite
+									g2.drawImage(Chasseur,spriteLength*(i-a1) + SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+								}
+								if ( braconnier.getSens() == 2 ) { //va en bas
+									g2.drawImage(Chasseur,spriteLength*(i-a1) ,spriteLength*(j-a2) + SpriteDemo.marcher,spriteLength-((int)spriteLength/5),spriteLength, frame);
+								}
+								if ( braconnier.getSens() == 3 ) { //va en haut
+									g2.drawImage(Chasseur,spriteLength*(i-a1) ,spriteLength*(j-a2) - SpriteDemo.marcher,spriteLength-((int)spriteLength/5),spriteLength, frame);
+								}
+							continue;
+						}
 					
 						
 					}
+			}
+		}
+		for ( int i = a1 ; i < wx ; i+=5) {
+			for ( int j = a2 ; j < wy ; j+=5 ) {
+				g2.drawImage(pluie,i,j,spriteLength*5,spriteLength*5, frame);
 			}
 		}
 	}

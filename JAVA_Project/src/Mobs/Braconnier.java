@@ -5,9 +5,11 @@ import Monde.Monde;
 public class Braconnier {
 	private int x;
 	private int y;
+	private int sens;
 	public Braconnier(int x,int y) {
 		this.x=x;
 		this.y=y;
+		sens=0;
 	}
 	public int getX() {
 		return x;
@@ -20,19 +22,73 @@ public class Braconnier {
 		for (int i=0;i<Monde.getcarte_Ag().size();i++) {
 			if (Monde.getcarte_Ag().get(i) instanceof M) { //&& Utilitaire.distance2O(((M) Monde.getCarte().get(i)),this)<=1) {
 				if (Math.random() <=1.0) {
-					System.out.println("GO GO");
 					x=((M)Monde.getcarte_Ag().get(i)).getX();
 					y=((M)Monde.getcarte_Ag().get(i)).getY();
 					return ;
 				}
 			}
 		}
-		//do {
-			x1= (int) (Math.random()*3) -1;
-			x2= (int) (Math.random()*3) -1;
-		//}while(Monde.testC(((x+x1+dx)%dx),((y+x2+dy)%dy)).size() !=0);
-		x=(x+x1+dx)%dx;
-		y=(y+x2+dy)%dy;
+		if (this.sens == 0) {
+			this.x=(this.x-1+dx)%dx;
+		}
+		if (this.sens == 1) {
+			this.x=(this.x+1+dx)%dx;
+		}
+		if (this.sens == 2) {
+			this.y=(this.y+1+dy)%dy;
+		}
+		if (this.sens == 3) {
+			this.y=(this.y-1+dy)%dy;
+		}
+	}
+	
+	public void setSens() {
+		double d=0;
+		int direction=0;
+		for (int i=0;i<Monde.getcarte_Ag().size();i++) {
+			if (Monde.getcarte_Ag().get(i) instanceof M1 || Monde.getcarte_Ag().get(i) instanceof M2) {
+				int delta_x=this.x-((M) Monde.getcarte_Ag().get(i)).getX();
+				int delta_y=this.y-((M) Monde.getcarte_Ag().get(i)).getY();
+				double delta=Math.sqrt(delta_x*delta_x+delta_y*delta_y);
+				if (i==0) {
+					d=delta;
+				}else {
+					if (delta<d) {
+						if (delta_x<0 && delta_y>0) {
+							if (Math.abs(delta_x)>=Math.abs(delta_y)) {
+								this.sens=1;
+							}else {
+								this.sens=3;
+							}
+						}
+						if (delta_x>0 && delta_y<0) {
+							if (Math.abs(delta_x)>=Math.abs(delta_y)) {
+								this.sens=0;
+							}else {
+								this.sens=2;
+							}
+						}
+						if (delta_x<0 && delta_y<0) {
+							if (Math.abs(delta_x)>=Math.abs(delta_y)) {
+								this.sens=1;
+							}else {
+								this.sens=2;
+							}
+						}
+						if (delta_x>0 && delta_y>0) {
+							if (Math.abs(delta_x)>=Math.abs(delta_y)) {
+								this.sens=0;
+							}else {
+								this.sens=3;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	public int getSens() {
+		return this.sens;
 	}
 	public static void chasser() {
 		for (int c=0;c<Monde.getcarte_Ag().size();c++) {

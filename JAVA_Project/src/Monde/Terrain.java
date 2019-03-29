@@ -67,8 +67,8 @@ public class Terrain {
 	public void eruption() {
 		for(int i = 0; i < dx ; i++) {
 			for(int j = 0; j < dy; j++) {
-				if(this.getTerrain()[i][j][0] >=247) { //Pour un haut altitude
-					this.getTerrain()[i][j][1] =  255; //Pour debuter ecoulement de lave 
+				if(this.getTerrain()[i][j][0] >=(this.sommetVolcan() - 1)) { //Pour un haut altitude
+					this.getTerrain()[i][j][1] =  this.SolLave(); //Pour debuter ecoulement de lave 
 				}	
 			}
 		}
@@ -76,9 +76,13 @@ public class Terrain {
 	public void propagation_lave() {
 		for(int i = 0; i < dx ; i++) {
 			for(int j = 0; j < dy; j++) {
-				if(this.getTerrain()[i][j][0] >= 237 && (this.getTerrain()[i-1][j][1] == 255 || this.getTerrain()[i+1][j][1] == 255|| this.getTerrain()[i][j+1][1] == 255|| this.getTerrain()[i][j-1][1] == 255 )) {
-					if(Math.random() <= 0.05) {
-						this.getTerrain()[i][j][1] = 255; //coulé de lave
+				if (((this.getTerrain()[i][j][0] <= this.getTerrain()[(i-1+dx)%dx][j][0] && (this.getTerrain()[(i-1+dx)%dx][j][1] == this.SolLave())) 
+						|| (this.getTerrain()[i][j][0] <= this.getTerrain()[(i+1+dx)%dx][j][0] && (this.getTerrain()[(i+1+dx)%dx][j][1] == this.SolLave())
+						|| (this.getTerrain()[i][j][0] <= this.getTerrain()[i][(j+1+dy)%dy][0] && (this.getTerrain()[i][(j+1+dy)%dy][1] == this.SolLave()))
+						|| (this.getTerrain()[i][j][0] <= this.getTerrain()[i][(j-1+dy)%dy][0] && (this.getTerrain()[i][(j-1+dy)%dy][1] == this.SolLave()))))) { //si l'altitude est moins élevé
+					
+					if(Math.random() <= 0.1) {
+						this.getTerrain()[i][j][1] = this.SolLave(); //coulé de lave
 					}
 				}
 			}
@@ -87,16 +91,30 @@ public class Terrain {
 	public void partir_lave() {
 		for(int i = 0; i < dx ; i++) {
 			for(int j = 0; j < dy; j++) {
-				if(this.getTerrain()[i][j][1] == 255 && this.getTerrain()[i][j][0] < 240) {
-					this.getTerrain()[i][j][1]=207; //devient de la terre
+				if(this.getTerrain()[i][j][1] == this.SolLave() && this.getTerrain()[i][j][0] <= this.contourRoche()) {
+					this.getTerrain()[i][j][1]=this.getTerre(); //devient de la terre
 				}
 				else {
-					if(this.getTerrain()[i][j][1] == 255 && this.getTerrain()[i][j][0] >= 239) {	
-						this.getTerrain()[i][j][1]=this.getTerrain()[i][j][0];
+					if(this.getTerrain()[i][j][1] == 255 && this.getTerrain()[i][j][0] >= this.contourRoche()) {	
+						this.getTerrain()[i][j][1]=this.getTerrain()[i][j][0]; //la lave redevient solide
 					}
 				}
 			}
 		}
 	}
-	
+	public static int getTerre() {
+		return 207;
+	}
+	public static int getEau() {
+		return 205;
+	}
+	public static int contourRoche() {
+		return 239;
+	}
+	public static int sommetVolcan() {
+		return 248;
+	}
+	public static int SolLave() {
+		return 255;
+	}
 }

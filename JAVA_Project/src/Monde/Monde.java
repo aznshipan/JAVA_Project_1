@@ -32,6 +32,7 @@ public class Monde {
 	public Monde(int x, int y, double taux_agent,double percolation_Ab) {//Initialisation de la liste des agents à mettre dans le monde
 		dx=x;
 		dy=y;
+		carte_Ag.add(new Braconnier(10,10));
 		for (int i=0;i<dx;i++) {
 			for(int j=0;j<dy;j++) {
 					if(Terrain.getTerrain()[i][j][1] >= 205 && Terrain.getTerrain()[i][j][1] < 239) {
@@ -156,9 +157,10 @@ public class Monde {
 					}
 					((M) carte_Ag.get(i)).setSens();
 				}
-				/*if (carte_Ag.get(i) instanceof Braconnier) {
+				if (carte_Ag.get(i) instanceof Braconnier) {
+					((Braconnier) carte_Ag.get(i)).setSens();
 					((Braconnier) carte_Ag.get(i)).move(dx, dy);
-				}*/
+				}
 			}
 		}
 		for (int i=0;i<carte_P.size();i++) {
