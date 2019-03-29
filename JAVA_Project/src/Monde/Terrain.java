@@ -35,8 +35,8 @@ public class Terrain {
 			for (int j=0;j<dy;j++) {
 				Color c = new Color(image.getRGB(i, j));
 				int couleur = c.getRed();
-				terrain[i][j][0]=couleur;
-				terrain[i][j][1]=couleur;
+				terrain[i][j][0]=couleur; //Altitude
+				terrain[i][j][1]=couleur; //Type de terrain(biome)
 				terrain[i][j][2]=0;
 				
 				System.out.print(" "+ terrain[i][j][1]);
@@ -63,6 +63,40 @@ public class Terrain {
 	}
 	public static int[][][] getTerrain() {
 		return terrain;
+	}
+	public void eruption() {
+		for(int i = 0; i < dx ; i++) {
+			for(int j = 0; j < dy; j++) {
+				if(this.getTerrain()[i][j][0] >=247) { //Pour un haut altitude
+					this.getTerrain()[i][j][1] =  255; //Pour debuter ecoulement de lave 
+				}	
+			}
+		}
+	}
+	public void propagation_lave() {
+		for(int i = 0; i < dx ; i++) {
+			for(int j = 0; j < dy; j++) {
+				if(this.getTerrain()[i][j][0] >= 237 && (this.getTerrain()[i-1][j][1] == 255 || this.getTerrain()[i+1][j][1] == 255|| this.getTerrain()[i][j+1][1] == 255|| this.getTerrain()[i][j-1][1] == 255 )) {
+					if(Math.random() <= 0.05) {
+						this.getTerrain()[i][j][1] = 255; //coulé de lave
+					}
+				}
+			}
+		}
+	}
+	public void partir_lave() {
+		for(int i = 0; i < dx ; i++) {
+			for(int j = 0; j < dy; j++) {
+				if(this.getTerrain()[i][j][1] == 255 && this.getTerrain()[i][j][0] < 240) {
+					this.getTerrain()[i][j][1]=207; //devient de la terre
+				}
+				else {
+					if(this.getTerrain()[i][j][1] == 255 && this.getTerrain()[i][j][0] >= 239) {	
+						this.getTerrain()[i][j][1]=this.getTerrain()[i][j][0];
+					}
+				}
+			}
+		}
 	}
 	
 }

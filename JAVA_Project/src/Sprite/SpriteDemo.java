@@ -55,6 +55,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 	private Image Chasseur;
 	private Image Flamme;
 	private Image rochevolcan;
+	private Image Lave;
 	public static int dx;
 	public static int dy;
 	private int x;
@@ -64,6 +65,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 	private static int marcher = 0;
 	private static int cpt_pas = 0;
 	private static int step;
+	private static int cycle_volcan=0;
 	private int a1;
 	private int a2;
 	private int wx;
@@ -90,6 +92,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 			Chasseur = ImageIO.read(new File("chasseur.png"));
 			Flamme = Toolkit.getDefaultToolkit().createImage("Flamme.gif");
 			rochevolcan = ImageIO.read(new File("roche1.png"));
+			Lave = ImageIO.read(new File("lava.png"));
 			
 			PokemonFeuMove = new Image[4][8]; //Hericendre
 			PokemonFeuMove[0][0] = ImageIO.read(new File("Hericendre_walkdown1.png"));
@@ -294,9 +297,14 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 												}
 					if (Terrain.getTerrain()[i][j][0] >= 239 && Terrain.getTerrain()[i][j][0] < 248) {
 						if(Terrain.getTerrain()[i][j][0] < 241) {
-							g2.drawImage(rochevolcan,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+							if(Terrain.getTerrain()[i][j][0] == 239) {
+								g2.drawImage(rochevolcan,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+							}
+							else {
+								g2.drawImage(rochevolcan,spriteLength*(i-a1)-25,spriteLength*(j-a2)-10,spriteLength+25,spriteLength+10, frame);
+							}
 						}else {
-							g2.drawImage(rochevolcan,spriteLength*(i-a1)-50,spriteLength*(j-a2)-25,spriteLength+50,spriteLength+25, frame);
+							g2.drawImage(rochevolcan,spriteLength*(i-a1)-10,spriteLength*(j-a2)-25,spriteLength+10,spriteLength+25, frame);
 						}
 					}
 					}catch(Exception E) {
@@ -318,8 +326,28 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 		for ( int i = a1 ; i < wx ; i++ ) {
 			for ( int j = a2 ; j < wy ; j++ ) {
 				try {
-					if(Terrain.getTerrain()[i][j][0] == 248) {
-						g2.drawImage(rochevolcan,spriteLength*(i-a1)-100,spriteLength*(j-a2)-50,spriteLength+100,spriteLength+50, frame);
+					if(Terrain.getTerrain()[i][j][0] >= 242 && Terrain.getTerrain()[i][j][0] < 246) {
+						g2.drawImage(rochevolcan,spriteLength*(i-a1)-35,spriteLength*(j-a2)-15,spriteLength+35,spriteLength+15, frame);
+					}
+					
+				}catch(Exception e) {}
+			}
+		}
+		for ( int i = a1 ; i < wx ; i++ ) {
+			for ( int j = a2 ; j < wy ; j++ ) {
+				try {
+					if(Terrain.getTerrain()[i][j][0] >= 246 && Terrain.getTerrain()[i][j][0] <= 247) {
+						g2.drawImage(rochevolcan,spriteLength*(i-a1)-35,spriteLength*(j-a2)-15,spriteLength+35,spriteLength+15, frame);
+					}
+					
+				}catch(Exception e) {}
+			}
+		}
+		for ( int i = a1 ; i < wx ; i++ ) {
+			for ( int j = a2 ; j < wy ; j++ ) {
+				try {
+					if(Terrain.getTerrain()[i][j][1] == 255) {
+						g2.drawImage(Lave,spriteLength*(i-a1)-35,spriteLength*(j-a2)-15,spriteLength+35,spriteLength+15, frame);
 					}
 					
 				}catch(Exception e) {}
@@ -570,7 +598,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
     } 
 	
 	public static void main(String[] args) {
-		Terrain terrain= new Terrain(dx=220,dy=100);
+		Terrain terrain= new Terrain(dx=100,dy=100);
 		Monde monde = new Monde(dx,dy,0.01,0.5);
 		SpriteDemo a =new SpriteDemo();
 		//System.exit(0);
@@ -594,6 +622,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 				pas = 0;
 			}
 			if(cpt_pas % 8 == 0) {
+				cycle_volcan++;
 				monde.pomme_pop(step);
 				Pomme.duree();
 				Pomme.delete();
@@ -603,6 +632,11 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 			//	terrain.Stockage_passage();
 				Monde.grandir();
 			//	M.reproduction();
+				if(cycle_volcan % 100 == 0) {
+					terrain.partir_lave();
+				}
+				terrain.propagation_lave();
+				terrain.eruption();
 				monde.arbreMourir();
 				monde.depart_feu();
 				monde.propagation_F();

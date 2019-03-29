@@ -140,7 +140,7 @@ public class Monde {
 		for (int i=0;i<carte_Ag.size();i++) {
 			if(i<carte_Ag.size()) {
 				if (carte_Ag.get(i) instanceof M1) {
-					if(Terrain.getTerrain()[((M1)carte_Ag.get(i)).getX()][((M1)carte_Ag.get(i)).getY()][1] <= 10) {
+					if(Terrain.getTerrain()[((M1)carte_Ag.get(i)).getX()][((M1)carte_Ag.get(i)).getY()][1] < 205) {
 						carte_Ag.remove(i);
 					}
 				}
