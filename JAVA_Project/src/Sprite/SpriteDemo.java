@@ -67,6 +67,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 	private static int cpt_pas = 0;
 	private static int step;
 	private static int cycle_volcan=0;
+	private static int cycle_pluie=0;
 	private int a1;
 	private int a2;
 	private int wx;
@@ -475,11 +476,14 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 					}
 			}
 		}
-		for ( int i = a1 ; i < wx ; i+=5) {
-			for ( int j = a2 ; j < wy ; j+=5 ) {
-				g2.drawImage(pluie,i,j,spriteLength*5,spriteLength*5, frame);
+		if(Terrain.getPluie()) {
+			for ( int i = 0 ; i < wx ; i+=5) {
+				for ( int j = 0 ; j < wy ; j+=5 ) {
+					g2.drawImage(pluie,spriteLength*i,spriteLength*j,spriteLength*10,spriteLength*10, frame);
+				}
 			}
 		}
+		
 	}
 	@Override
 	public void keyPressed(KeyEvent evmt) {
@@ -646,7 +650,11 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 				pas = 0;
 			}
 			if(cpt_pas % 8 == 0) {
-				cycle_volcan++;
+				if(!terrain.getPluie()) {
+					cycle_volcan++;
+				}else {
+					terrain.evaporeLave(terrain.getPluie());
+				}
 				monde.pomme_pop(step);
 				Pomme.duree();
 				Pomme.delete();
@@ -656,15 +664,26 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 			//	terrain.Stockage_passage();
 				Monde.grandir();
 			//	M.reproduction();
+				terrain.MonteEau(terrain.getPluie());
 				if(cycle_volcan % 100 == 0) {
 					terrain.partir_lave();
 				}
-				terrain.propagation_lave();
-				terrain.eruption();
+				if(cycle_pluie % 130 == 0 && Math.random() <= 0.8) {
+					terrain.setPluie(true);;
+				}
+				if(cycle_pluie % 180 == 0) {
+					terrain.setPluie(false);
+					cycle_pluie = 1;
+				}
+				if(!terrain.getPluie()) {
+					terrain.propagation_lave();
+					terrain.eruption();
+				}
 				monde.arbreMourir();
 				monde.depart_feu();
 				monde.propagation_F();
 				monde.enfeu();
+				cycle_pluie++;
 			}
 			marcher += (int)(spriteLength/8);
 			try{
