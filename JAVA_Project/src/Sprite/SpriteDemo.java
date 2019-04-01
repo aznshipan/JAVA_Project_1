@@ -36,6 +36,21 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 
 	private JFrame frame;
 	
+	public static int dx;
+	public static int dy;
+	private int x;
+	private int y;
+	private static int spriteLength = 40;
+	private static int pas = 0;
+	private static int marcher = 0;
+	private static int cpt_pas = 0;
+	private static int step;
+	private static int cycle_volcan=0;
+	private static int cycle_pluie=0;
+	private int a1;
+	private int a2;
+	private int wx;
+	private int wy;
 	private Image waterSprite;
 	private Image grassSprite;
 	private Image treeSprite;
@@ -52,27 +67,24 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 	private Image PokemonEauEvolue;
 	private Image Apple;
 	private Image ApplePourri;
-	private Image Chasseur;
+	private Image[] Chasseur;
+	
 	private Image Flamme;
 	private Image rochevolcan;
 	private Image Lave;
 	private Image pluie;
-	public static int dx;
-	public static int dy;
-	private int x;
-	private int y;
-	private static int spriteLength = 40;
-	private static int pas = 0;
-	private static int marcher = 0;
-	private static int cpt_pas = 0;
-	private static int step;
-	private static int cycle_volcan=0;
-	private static int cycle_pluie=0;
-	private int a1;
-	private int a2;
-	private int wx;
-	private int wy;
 	public int vitesse;
+	private Image grassSpriteH;
+	private Image grassSpriteA;
+	private Image tSpriteH;
+	private Image tSpriteA;
+	private Image pluieF;
+	private Image nuitF;
+	private Image soleilF;
+	private int jour;
+	private long time_init;
+	private long laps;
+	private boolean duree;
 
 
 	public SpriteDemo()
@@ -82,7 +94,11 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 			waterSprite = ImageIO.read(new File("water.png"));
 			treeSprite = ImageIO.read(new File("arbref.png"));
 			grassSprite = ImageIO.read(new File("herbeP.png"));
+			grassSpriteH = ImageIO.read(new File("herbePN.png"));
+			grassSpriteA = ImageIO.read(new File("herbePA.png"));
 			tSprite = ImageIO.read(new File("test1.png"));
+			tSpriteH = ImageIO.read(new File("test1N.png"));
+			tSpriteA = ImageIO.read(new File("test1A.png"));
 			arbrecrame = ImageIO.read(new File("test1crame.png"));
 			terreSprite = ImageIO.read(new File("terre.png"));
 			PokemonFeu = ImageIO.read(new File("hericendre.png"));
@@ -91,11 +107,22 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 			PokemonEauEvolue = ImageIO.read(new File("CarabaffeTrans.png")); 
 			Apple = ImageIO.read(new File("pomme.png"));
 			ApplePourri = ImageIO.read(new File("pommeP.png"));
-			Chasseur = ImageIO.read(new File("chasseur.png"));
+			//Chasseur = ImageIO.read(new File("chasseur.png"));
 			Flamme = Toolkit.getDefaultToolkit().createImage("Flamme.gif");
 			rochevolcan = ImageIO.read(new File("roche1.png"));
 			Lave = ImageIO.read(new File("lava.png"));
 			pluie = Toolkit.getDefaultToolkit().createImage("Pluie.gif");
+			nuitF=ImageIO.read(new File("NuitF.png"));
+			soleilF=ImageIO.read(new File("SoleilF.png"));
+			time_init= (System.nanoTime()/1000000000);
+			jour=0;
+			duree=false;
+			
+			Chasseur = new Image[4]; //Chasseur
+			Chasseur[0] = Toolkit.getDefaultToolkit().createImage("character_walkleft.gif");
+			Chasseur[1] = Toolkit.getDefaultToolkit().createImage("character_walkright.gif");
+			Chasseur[2] = Toolkit.getDefaultToolkit().createImage("character_walkup.gif");
+			Chasseur[3] = Toolkit.getDefaultToolkit().createImage("character_walkdown.gif");
 			
 			PokemonFeuMove = new Image[4][8]; //Hericendre
 			PokemonFeuMove[0][0] = ImageIO.read(new File("Hericendre_walkdown1.png"));
@@ -278,7 +305,14 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 		for ( int i = a1 ; i < wx ; i++ ) {
 			for ( int j = a2 ; j < wy ; j++ ) {
 					try{
-						g2.drawImage(grassSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+						if (jour%12 < 3)
+							g2.drawImage(grassSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+						if (jour%12 >=3 && jour%12<6)
+							g2.drawImage(grassSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+						if (jour%12>=6 && jour%12<9)	
+							g2.drawImage(grassSpriteA,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+						if (jour%12>=9)
+							g2.drawImage(grassSpriteH,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
 					if (Terrain.getTerrain()[i][j][1] >= (Terrain.getTerre() - 2) && Terrain.getTerrain()[i][j][1] <= (Terrain.getTerre()+2))
 						g2.drawImage(terreSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
 					if (Terrain.getTerrain()[i][j][1] < Terrain.getEau())
@@ -293,7 +327,12 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 								if (Monde.getcarte_Ab().get(a).getGrille()) {
 									g2.drawImage(arbrecrame,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
 								}else {
-									g2.drawImage(tSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+									if (jour%12 < 6)
+										g2.drawImage(tSprite,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+									if (jour%12>=6 && jour%12<9)
+										g2.drawImage(tSpriteA,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
+									if (jour%12>=9)
+										g2.drawImage(tSpriteH,spriteLength*(i-a1),spriteLength*(j-a2),spriteLength,spriteLength, frame);
 								}
 							}
 						}
@@ -458,16 +497,16 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 							Braconnier braconnier = (Braconnier)(array_m.get(m));
 							
 								if ( braconnier.getSens() == 0 ) { //va a gauche
-									g2.drawImage(Chasseur,spriteLength*(i-a1) - SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+									g2.drawImage(Chasseur[0],spriteLength*(i-a1) - SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
 								}
 								if ( braconnier.getSens() == 1 ) { //va a droite
-									g2.drawImage(Chasseur,spriteLength*(i-a1) + SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+									g2.drawImage(Chasseur[1],spriteLength*(i-a1) + SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
 								}
 								if ( braconnier.getSens() == 2 ) { //va en bas
-									g2.drawImage(Chasseur,spriteLength*(i-a1) ,spriteLength*(j-a2) + SpriteDemo.marcher,spriteLength-((int)spriteLength/5),spriteLength, frame);
+									g2.drawImage(Chasseur[3],spriteLength*(i-a1) ,spriteLength*(j-a2) + SpriteDemo.marcher,spriteLength-((int)spriteLength/5),spriteLength, frame);
 								}
 								if ( braconnier.getSens() == 3 ) { //va en haut
-									g2.drawImage(Chasseur,spriteLength*(i-a1) ,spriteLength*(j-a2) - SpriteDemo.marcher,spriteLength-((int)spriteLength/5),spriteLength, frame);
+									g2.drawImage(Chasseur[2],spriteLength*(i-a1) ,spriteLength*(j-a2) - SpriteDemo.marcher,spriteLength-((int)spriteLength/5),spriteLength, frame);
 								}
 							continue;
 						}
@@ -484,6 +523,18 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 			}
 		}
 		
+		if (jour%12 >=3 && jour%12<6)
+			g2.drawImage(soleilF,0,0,spriteLength*wx,spriteLength*wy, frame);
+		
+		laps= Math.abs((time_init-(System.nanoTime()/1000000000)));
+		if (laps%10<5) {
+			g2.drawImage(nuitF,0,0,spriteLength*wx,spriteLength*wy, frame);
+			duree=true;
+		}else {
+			if (duree)
+				jour+=1;
+			duree=false;
+		}
 	}
 	@Override
 	public void keyPressed(KeyEvent evmt) {

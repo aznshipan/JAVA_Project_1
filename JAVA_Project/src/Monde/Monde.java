@@ -35,11 +35,11 @@ public class Monde {
 		carte_Ag.add(new Braconnier(10,10));
 		for (int i=0;i<dx;i++) {
 			for(int j=0;j<dy;j++) {
-					if(Terrain.getTerrain()[i][j][1] >= 205 && Terrain.getTerrain()[i][j][1] < 239) {
-						if(Math.random() < percolation_Ab) {
-						Terrain.getTerrain()[i][j][2]=1;
-						Arbre arbres = new Arbre(i, j);
-						carte_Ab.add(arbres);
+				if(Terrain.getTerrain()[i][j][1] >= 205 && Terrain.getTerrain()[i][j][1] < 239) {
+					if(Math.random() < percolation_Ab) {
+					Terrain.getTerrain()[i][j][2]=1;
+					Arbre arbres = new Arbre(i, j);
+					carte_Ab.add(arbres);
 					}
 				}
 			}
@@ -48,12 +48,17 @@ public class Monde {
 			for(int j=0;j<dy;j++) {
 					if(Terrain.getTerrain()[i][j][1] >= 205 && Terrain.getTerrain()[i][j][2]==0 && Terrain.getTerrain()[i][j][1] < 239) {
 						if(Math.random() < taux_agent) {
-						M1 monstre = new M1(i, j);
-						carte_Ag.add(monstre);
+							if(Math.random() < 0.5) {
+								M1 monstre = new M1(i, j);
+								carte_Ag.add(monstre);
+							}else {
+								M2 monstre = new M2(i, j);
+								carte_Ag.add(monstre);
+							}
+						}
 					}
 				}
 			}
-		}
 		/*for (int i=0;i<nb_Ag;i++) {
 			double p1 =  Math.random();
 			if (p1 <= 0.99) {
@@ -138,6 +143,13 @@ public class Monde {
 	}
 	
 	public void Refresh() {
+		for (int i=0;i<carte_Ab.size();i++) {
+			if(i<carte_Ab.size()) {
+				if(Terrain.getTerrain()[(carte_Ab.get(i)).getX()][(carte_Ab.get(i)).getY()][1] < Terrain.getEau()) {
+					carte_Ab.remove(i);
+				}
+			}
+		}
 		for (int i=0;i<carte_Ag.size();i++) {
 			if(i<carte_Ag.size()) {
 				if (carte_Ag.get(i) instanceof M1) {
