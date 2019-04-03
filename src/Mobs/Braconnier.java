@@ -19,7 +19,9 @@ public class Braconnier {
 		return y;
 	}
 	public void move(int dx, int dy) {
-
+		System.out.println("Je bouge");
+		System.out.println("==========");
+		System.out.println("");
 		if (this.sens == 0) {
 			this.x=(this.x-1+dx)%dx;
 		}
@@ -36,6 +38,7 @@ public class Braconnier {
 	}
 	
 	public void setSens(int cpt) {
+		System.out.println("Je m'oriente");
 		if((Terrain.getTerrain()[(x-1+Monde.getDx())%Monde.getDx()][y][2] == 1 || Terrain.getTerrain()[(x-1+Monde.getDx())%Monde.getDx()][y][1] >= Terrain.contourRoche()) 
 				&& (Terrain.getTerrain()[(x+1+Monde.getDx())%Monde.getDx()][y][2] == 1 || Terrain.getTerrain()[(x+1+Monde.getDx())%Monde.getDx()][y][1] >= Terrain.contourRoche()) 
 				&& (Terrain.getTerrain()[x][(y+1+Monde.getDy())%Monde.getDy()][2] == 1 || Terrain.getTerrain()[x][(y+1+Monde.getDy())%Monde.getDy()][1] >= Terrain.contourRoche()) 
@@ -43,7 +46,7 @@ public class Braconnier {
 			Monde.getcarte_Ag().remove(this);
 			return;
 		}
-		if(cpt >= 20) {
+		if(cpt >= 1) {
 			this.sens = (int)(Math.random()*4);
 			if (this.sens == 0) {
 				if(Terrain.getTerrain()[(x-1+Monde.getDx())%Monde.getDx()][y][1] >= Terrain.contourRoche() || Terrain.getTerrain()[(x-1+Monde.getDx())%Monde.getDx()][y][2] == 1) {

@@ -600,7 +600,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 	
 	public static void main(String[] args) {
 		Terrain terrain= new Terrain(dx=100,dy=100);
-		Monde monde = new Monde(dx,dy,0.1,0.1);
+		Monde monde = new Monde(dx,dy,0.01,0.1);
 		SpriteDemo a =new SpriteDemo();
 		//System.exit(0);
         a.addKeyListener(a);
@@ -628,8 +628,8 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 				}else {
 					terrain.evaporeLave(terrain.getPluie());
 				}
-				monde.tree_pop(arbreEnCroissance);
-				monde.pomme_pop(step);
+			//	monde.tree_pop(arbreEnCroissance);
+				monde.pomme_pop(step, 0);
 				Pomme.duree();
 				Pomme.delete();
 				monde.Refresh();

@@ -36,13 +36,13 @@ public class Terrain {
 		int taille_x=((int) (Math.random()*(Math.max(0,image.getHeight()-dx))));
 		taille_x=0;
 		taille_y=0;
-		for (int i=taille_y;i<taille_y+dy;i++) {
-			for (int j=taille_x;j<taille_x+dx;j++) {
+		for (int i=taille_x;i<taille_x+dx;i++) {
+			for (int j=taille_y;j<taille_y+dy;j++) {
 				Color c = new Color(image.getRGB(i, j));
 				int couleur = c.getRed();
-				terrain[i-taille_y][j-taille_x][0]=couleur; //Altitude
-				terrain[i-taille_y][j-taille_x][1]=couleur; //Type de terrain(biome)
-				terrain[i-taille_y][j-taille_x][2]=0; //Si il y a un arbre ou pas
+				terrain[i-taille_x][j-taille_y][0]=couleur; //Altitude
+				terrain[i-taille_x][j-taille_y][1]=couleur; //Type de terrain(biome)
+				terrain[i-taille_x][j-taille_y][2]=0; //Si il y a un arbre ou pas
 				
 				System.out.print(" "+ terrain[i-taille_y][j-taille_x][1]);
 			}

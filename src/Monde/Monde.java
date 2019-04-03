@@ -32,7 +32,7 @@ public class Monde {
 	public Monde(int x, int y, double taux_agent,double percolation_Ab) {//Initialisation de la liste des agents à mettre dans le monde
 		dx=x;
 		dy=y;
-		carte_Ag.add(new Braconnier(10,10));
+		carte_Ag.add(new Braconnier(1,2));
 		for (int i=0;i<dx;i++) {
 			for(int j=0;j<dy;j++) {
 				if(Terrain.getTerrain()[i][j][1] >= Terrain.getEau() && Terrain.getTerrain()[i][j][1] < Terrain.contourRoche()) {
@@ -92,7 +92,10 @@ public class Monde {
 		//carte_Ag.add(new M2(5,5));
 	}
 	
-	public void pomme_pop(int cpt) { //fait apparaitre des pomme sur la carte_A
+	public void pomme_pop(int cpt, int essaie) { //fait apparaitre des pomme sur la carte_A
+		if(essaie >= 100) {
+			return;
+		}
 		if (cpt % 2 == 0) {
 			int x1,y1;
 			boolean bool_A;
@@ -115,7 +118,8 @@ public class Monde {
 				Pomme apple = new Pomme(x1, y1);
 				carte_P.add(apple);
 			}else {
-				pomme_pop(cpt);
+				pomme_pop(cpt, essaie+1);
+				return;
 			}
 		}
 	}
