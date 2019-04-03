@@ -137,7 +137,7 @@ public class Monde {
 							}
 						}
 						if(occupe == false){ //si la place est libre
-							if(Math.random() < 0.01) {
+							if(Math.random() < 0.005) {
 								Terrain.getTerrain()[i][j][2]=1;
 								Arbre arbres = new Arbre(i, j);
 								carte_Ab.add(arbres);
@@ -172,6 +172,15 @@ public class Monde {
 	}
 	
 	public void Refresh() {
+		for (int i=0;i<carte_Ag.size();i++) {
+			if(i<carte_Ag.size()) {
+				if (carte_Ag.get(i) instanceof M) {
+					if(((M)carte_Ag.get(i)).getMort()) {
+						carte_Ag.remove(i);
+					}
+				}
+			}
+		}
 		for (int i=0;i<carte_Ab.size();i++) {
 			if(i<carte_Ab.size()) {
 				if(Terrain.getTerrain()[(carte_Ab.get(i)).getX()][(carte_Ab.get(i)).getY()][1] < Terrain.getEau()) {
@@ -184,7 +193,16 @@ public class Monde {
 				if (carte_Ag.get(i) instanceof M1) {
 					if(Terrain.getTerrain()[((M1)carte_Ag.get(i)).getX()][((M1)carte_Ag.get(i)).getY()][1] < Terrain.getEau()
 							|| Terrain.getTerrain()[((M1)carte_Ag.get(i)).getX()][((M1)carte_Ag.get(i)).getY()][1] == Terrain.SolLave() ) {
-						carte_Ag.remove(i);
+						((M1)carte_Ag.get(i)).setMort(true);
+					}
+				}
+			}
+		}
+		for (int i=0;i<carte_Ag.size();i++) {
+			if(i<carte_Ag.size()) {
+				if (carte_Ag.get(i) instanceof M2) {
+					if(Terrain.getTerrain()[((M2)carte_Ag.get(i)).getX()][((M2)carte_Ag.get(i)).getY()][1] == Terrain.SolLave() ) {
+						((M2)carte_Ag.get(i)).setMort(true);
 					}
 				}
 			}
@@ -201,7 +219,7 @@ public class Monde {
 				}else {
 					if (carte_Ag.get(i) instanceof Braconnier) {
 						((Braconnier) carte_Ag.get(i)).move(dx, dy);
-						((Braconnier) carte_Ag.get(i)).setSens();
+						((Braconnier) carte_Ag.get(i)).setSens(0);
 					}
 				}
 			}

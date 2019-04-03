@@ -47,24 +47,25 @@ public class M1 extends M{
 	}
 
 	public void move(int dx, int dy) {
-		if (this.sens == 0) {
-			this.x=(this.x-1+dx)%dx;
-		}
-		if (this.sens == 1) {
-			this.x=(this.x+1+dx)%dx;
-		}
-		if (this.sens == 2) {
-			this.y=(this.y+1+dy)%dy;
-		}
-		if (this.sens == 3) {
-			this.y=(this.y-1+dy)%dy;
-		}
-		for (int m=  0; m < Monde.getcarte_P().size();m++) {
-			if (Monde.getcarte_P().get(m) instanceof Pomme && ((Pomme) Monde.getcarte_P().get(m)).getX() == this.x && ((Pomme) Monde.getcarte_P().get(m)).getY() == this.y) {
+		if(!this.getMort()) {
+			if (this.sens == 0) {
+				this.x=(this.x-1+dx)%dx;
+			}
+			if (this.sens == 1) {
+				this.x=(this.x+1+dx)%dx;
+			}
+			if (this.sens == 2) {
+				this.y=(this.y+1+dy)%dy;
+			}
+			if (this.sens == 3) {
+				this.y=(this.y-1+dy)%dy;
+			}
+			for (int m=  0; m < Monde.getcarte_P().size();m++) {
+				if (Monde.getcarte_P().get(m) instanceof Pomme && ((Pomme) Monde.getcarte_P().get(m)).getX() == this.x && ((Pomme) Monde.getcarte_P().get(m)).getY() == this.y) {
 				manger_pomme((Pomme) Monde.getcarte_P().get(m));
+				}
 			}
 		}
-		
 	}
 	
 	public void evoluer() {
@@ -110,7 +111,7 @@ public class M1 extends M{
 				&& (Terrain.getTerrain()[this.x][(this.y+1+Monde.getDy())%Monde.getDy()][2] == 1 || Terrain.getTerrain()[this.x][(this.y+1+Monde.getDy())%Monde.getDy()][1] <= 10) 
 				&& (Terrain.getTerrain()[this.x][(this.y-1+Monde.getDy())%Monde.getDy()][2] == 1 || Terrain.getTerrain()[this.x][(this.y-1+Monde.getDy())%Monde.getDy()][1] <= 10)) 
 		{
-			Monde.getcarte_Ag().remove(this);
+			this.setMort(true);
 			return;
 		}
 		int x1,y1;

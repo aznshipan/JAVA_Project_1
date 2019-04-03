@@ -12,7 +12,7 @@ public abstract class M {
 	protected String S;
 	protected int nb_pomme_manger;
 	protected boolean evolution;
-
+	protected boolean mort;
 
 
 	protected int step;
@@ -27,6 +27,7 @@ public abstract class M {
 		step =0;
 		nb_pomme_manger = 0;
 		evolution = false;
+		mort = false;
 		
 	}
 	public void move(int dx, int dy) {
@@ -125,6 +126,12 @@ public abstract class M {
 				}
 			}
 		}
+	}
+	public void setMort(boolean mort) {
+		this.mort = mort;
+	}
+	public boolean getMort() {
+		return this.mort;
 	}
 	public abstract void setSens();
 	

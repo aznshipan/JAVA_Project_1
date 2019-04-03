@@ -68,6 +68,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 	private Image Apple;
 	private Image ApplePourri;
 	private Image[] Chasseur;
+	private Image TombeRIP;
 	
 	private Image Flamme;
 	private Image rochevolcan;
@@ -92,6 +93,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 	{
 		try
 		{
+			TombeRIP = ImageIO.read(new File("tete-de-mort.png"));
 			waterSprite = ImageIO.read(new File("water.png"));
 			treeSprite = ImageIO.read(new File("arbref.png"));
 			grassSprite = ImageIO.read(new File("herbeP.png"));
@@ -108,7 +110,6 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 			PokemonEauEvolue = ImageIO.read(new File("CarabaffeTrans.png")); 
 			Apple = ImageIO.read(new File("pomme.png"));
 			ApplePourri = ImageIO.read(new File("pommeP.png"));
-			//Chasseur = ImageIO.read(new File("chasseur.png"));
 			Flamme = Toolkit.getDefaultToolkit().createImage("Flamme.gif");
 			rochevolcan = ImageIO.read(new File("roche1.png"));
 			Lave = ImageIO.read(new File("lava.png"));
@@ -174,8 +175,8 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 	{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
-		for ( int i = a1 ; i < wx ; i++ ) {
-			for ( int j = a2 ; j < wy ; j++ ) {
+		for ( int i = a1 ; i < Math.min(dx*spriteLength, wx-a1) ; i++ ) {
+			for ( int j = a2 ; j < Math.min(dy*spriteLength,wy-a2) ; j++ ) {
 					try{
 						if (jour%12 < 3){
 							arbreEnCroissance = true;
@@ -279,9 +280,12 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 			for ( int j = a2 ; j < wy ; j++ ){
 					ArrayList<Object> array_m=Monde.getcarte_Ag();
 					for (int m=0;m<array_m.size();m++) {
-						if (array_m.get(m) instanceof M1 && ((M1)array_m.get(m)).getX()==i && ((M1)array_m.get(m)).getY()==j) {
+						try {
+						if ((array_m.get(m) instanceof M1) && (((M1)array_m.get(m)).getX()==i && ((M1)array_m.get(m)).getY()==j)) {
 							M1 Hericendre = (M1)(array_m.get(m));
-							
+							if(Hericendre.getMort()) {
+								g2.drawImage(TombeRIP,spriteLength*(i-a1) ,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+							}else {
 							if(Hericendre.getEvolution() == false) {
 								if ( Hericendre.getSens() == 0 ) { //va a gauche
 									g2.drawImage(PokemonFeuMove[0],spriteLength*(i-a1) - SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
@@ -335,13 +339,16 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 								if ( Hericendre.getSens() == 7 ) { //reste sur place
 									g2.drawImage(PokemonFeuEvolueMove[3],spriteLength*(i-a1) ,spriteLength*(j-a2),spriteLength,spriteLength, frame);
 								}
-							}
+							}}
 							continue;
-						}
-
-						if (array_m.get(m) instanceof M2 && ((M2)array_m.get(m)).getX()==i && ((M2)array_m.get(m)).getY()==j) {
+						}}catch(Exception e) {}
+						try {
+						if ((array_m.get(m) instanceof M2) && (((M2)array_m.get(m)).getX()==i && ((M2)array_m.get(m)).getY()==j)) {
 							M2 Carapuce = (M2)(array_m.get(m));
 							
+							if(Carapuce.getMort()) {
+								g2.drawImage(TombeRIP,spriteLength*(i-a1) ,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+							}else {
 							if(Carapuce.getEvolution() == false) {
 								if ( Carapuce.getSens() == 0 ) { //va a gauche
 									g2.drawImage(PokemonEauMove[0],spriteLength*(i-a1) - SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
@@ -394,26 +401,39 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 								if ( Carapuce.getSens() == 7 ) { //reste sur place
 									g2.drawImage(PokemonEauEvolueMove[3],spriteLength*(i-a1) ,spriteLength*(j-a2),spriteLength,spriteLength, frame);
 								}
-							}
+							}}
 							continue;
-						}
+						}}catch(Exception e) {}
+						try {
 						if (array_m.get(m) instanceof Braconnier && ((Braconnier)array_m.get(m)).getX()==i && ((Braconnier)array_m.get(m)).getY()==j) {
 							Braconnier braconnier = (Braconnier)(array_m.get(m));
 							
 							if ( braconnier.getSens() == 0 ) { //va a gauche
-								g2.drawImage(Chasseur[0],spriteLength*(i-a1) - SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+								g2.drawImage(Chasseur[0],spriteLength*(i-a1)-(spriteLength/5) - SpriteDemo.marcher,spriteLength*(j-a2),spriteLength+(spriteLength/5),spriteLength+(spriteLength/5), frame);
 							}
 							if ( braconnier.getSens() == 1 ) { //va a droite
-								g2.drawImage(Chasseur[1],spriteLength*(i-a1) + SpriteDemo.marcher,spriteLength*(j-a2),spriteLength,spriteLength, frame);
+								g2.drawImage(Chasseur[1],spriteLength*(i-a1)-(spriteLength/5) + SpriteDemo.marcher,spriteLength*(j-a2),spriteLength+(spriteLength/5),spriteLength+(spriteLength/5), frame);
 							}
 							if ( braconnier.getSens() == 2 ) { //va en bas
-								g2.drawImage(Chasseur[3],spriteLength*(i-a1) ,spriteLength*(j-a2) + SpriteDemo.marcher,spriteLength-((int)spriteLength/5),spriteLength, frame);
+								g2.drawImage(Chasseur[3],spriteLength*(i-a1)-(spriteLength/5) ,spriteLength*(j-a2)-(spriteLength/5) + SpriteDemo.marcher,spriteLength-((int)spriteLength/5)+(spriteLength/5),spriteLength+(spriteLength/5), frame);
 							}
 							if ( braconnier.getSens() == 3 ) { //va en haut
-								g2.drawImage(Chasseur[2],spriteLength*(i-a1) ,spriteLength*(j-a2) - SpriteDemo.marcher,spriteLength-((int)spriteLength/5),spriteLength, frame);
+								g2.drawImage(Chasseur[2],spriteLength*(i-a1)-(spriteLength/5) ,spriteLength*(j-a2)-(spriteLength/5) - SpriteDemo.marcher,spriteLength-((int)spriteLength/5)+(spriteLength/5),spriteLength+(spriteLength/5), frame);
+							}
+							if ( braconnier.getSens() == 4 ) { //reste sur place
+								g2.drawImage(Chasseur[0],spriteLength*(i-a1)-(spriteLength/5) ,spriteLength*(j-a2),spriteLength+(spriteLength/5),spriteLength+(spriteLength/5), frame);
+							}
+							if ( braconnier.getSens() == 5 ) { //reste sur place
+								g2.drawImage(Chasseur[1],spriteLength*(i-a1)-(spriteLength/5) ,spriteLength*(j-a2),spriteLength+(spriteLength/5),spriteLength+(spriteLength/5), frame);
+							}
+							if ( braconnier.getSens() == 6 ) { //reste sur place
+								g2.drawImage(Chasseur[3],spriteLength*(i-a1)-(spriteLength/5) ,spriteLength*(j-a2)-(spriteLength/5),spriteLength-((int)spriteLength/5)+(spriteLength/5),spriteLength+(spriteLength/5), frame);
+							}
+							if ( braconnier.getSens() == 7 ) { //reste sur place
+								g2.drawImage(Chasseur[2],spriteLength*(i-a1)-(spriteLength/5) ,spriteLength*(j-a2)-(spriteLength/5),spriteLength-((int)spriteLength/5)+(spriteLength/5),spriteLength+(spriteLength/5), frame);
 							}
 							continue;
-						}
+						}}catch(Exception e) {}
 				}
 			}
 		}
@@ -580,7 +600,7 @@ public class SpriteDemo extends JPanel implements KeyListener,MouseListener,Mous
 	
 	public static void main(String[] args) {
 		Terrain terrain= new Terrain(dx=100,dy=100);
-		Monde monde = new Monde(dx,dy,0.1,0.5);
+		Monde monde = new Monde(dx,dy,0.1,0.1);
 		SpriteDemo a =new SpriteDemo();
 		//System.exit(0);
         a.addKeyListener(a);

@@ -32,15 +32,19 @@ public class Terrain {
 		this.dx=dx;
 		this.dy=dy;
 		terrain = new int[dx][dy][3];
-		for (int i=0;i<dx;i++) {
-			for (int j=0;j<dy;j++) {
+		int taille_y=((int) (Math.random()*(Math.max(0,image.getHeight()-dy))));
+		int taille_x=((int) (Math.random()*(Math.max(0,image.getHeight()-dx))));
+		taille_x=0;
+		taille_y=0;
+		for (int i=taille_y;i<taille_y+dy;i++) {
+			for (int j=taille_x;j<taille_x+dx;j++) {
 				Color c = new Color(image.getRGB(i, j));
 				int couleur = c.getRed();
-				terrain[i][j][0]=couleur; //Altitude
-				terrain[i][j][1]=couleur; //Type de terrain(biome)
-				terrain[i][j][2]=0; //Si il y a un arbre ou pas
+				terrain[i-taille_y][j-taille_x][0]=couleur; //Altitude
+				terrain[i-taille_y][j-taille_x][1]=couleur; //Type de terrain(biome)
+				terrain[i-taille_y][j-taille_x][2]=0; //Si il y a un arbre ou pas
 				
-				System.out.print(" "+ terrain[i][j][1]);
+				System.out.print(" "+ terrain[i-taille_y][j-taille_x][1]);
 			}
 			System.out.println("");
 		}
@@ -111,7 +115,7 @@ public class Terrain {
 							|| this.getTerrain()[(i-1+dx)%dx][j][1]<this.getEau() 
 							|| this.getTerrain()[i][(j+1+dy)%dy][1]<this.getEau() 
 							|| this.getTerrain()[i][(j-1+dy)%dy][1]<this.getEau()) && (this.getTerrain()[i][j][1]>=this.getEau())) {
-						if(Math.random() < 0.02) {
+						if(Math.random() < 0.2) {
 							this.getTerrain()[i][j][1]=this.getTerrain()[i][j][1]-5;
 						}
 					}
